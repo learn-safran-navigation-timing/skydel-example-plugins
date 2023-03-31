@@ -9,9 +9,9 @@ add_library(simple_plugin SHARED
     )
 
 target_link_libraries(simple_plugin PUBLIC
-    Skydel::SkydelPlugin
+    SkydelPlugin
     )
 
 set_target_properties(simple_plugin PROPERTIES CXX_STANDARD 17)
 
-install(TARGETS simple_plugin DESTINATION ${PLUGIN_INSTALL_DIR})
+install(TARGETS simple_plugin RUNTIME DESTINATION ${PLUGIN_INSTALL_DIR})

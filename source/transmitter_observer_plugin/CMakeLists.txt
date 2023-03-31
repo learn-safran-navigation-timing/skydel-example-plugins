@@ -11,10 +11,10 @@ add_library(transmitter_observer_plugin SHARED
     )
 
 target_link_libraries(transmitter_observer_plugin PUBLIC
-    Skydel::SkydelPlugin
-	Qt5::Network
+    SkydelPlugin
+    Qt5::Network
     )
 
 set_target_properties(transmitter_observer_plugin PROPERTIES CXX_STANDARD 17)
 
-install(TARGETS transmitter_observer_plugin DESTINATION ${PLUGIN_INSTALL_DIR})
+install(TARGETS transmitter_observer_plugin RUNTIME DESTINATION ${PLUGIN_INSTALL_DIR})

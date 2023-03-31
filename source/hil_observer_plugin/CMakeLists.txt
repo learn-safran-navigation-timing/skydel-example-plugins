@@ -9,9 +9,9 @@ add_library(hil_observer_plugin SHARED
     )
 
 target_link_libraries(hil_observer_plugin PUBLIC
-    Skydel::SkydelPlugin
+    SkydelPlugin
     )
 
 set_target_properties(hil_observer_plugin PROPERTIES CXX_STANDARD 17)
 
-install(TARGETS hil_observer_plugin DESTINATION ${PLUGIN_INSTALL_DIR})
+install(TARGETS hil_observer_plugin RUNTIME DESTINATION ${PLUGIN_INSTALL_DIR})

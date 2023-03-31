@@ -12,10 +12,10 @@ add_library(position_observer_plugin SHARED
     )
 
 target_link_libraries(position_observer_plugin PUBLIC
-    Skydel::SkydelPlugin
+    SkydelPlugin
     Qt5::Network
     )
 
 set_target_properties(position_observer_plugin PROPERTIES CXX_STANDARD 17)
 
-install(TARGETS position_observer_plugin DESTINATION ${PLUGIN_INSTALL_DIR})
+install(TARGETS position_observer_plugin RUNTIME DESTINATION ${PLUGIN_INSTALL_DIR})

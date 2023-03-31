@@ -9,10 +9,10 @@ add_library(rapi_plugin SHARED
     )
 
 target_link_libraries(rapi_plugin PUBLIC
-    Skydel::SkydelPlugin
+    SkydelPlugin
     skydel_rapi
     )
 
 set_target_properties(rapi_plugin PROPERTIES CXX_STANDARD 17)
 
-install(TARGETS rapi_plugin DESTINATION ${PLUGIN_INSTALL_DIR})
+install(TARGETS rapi_plugin RUNTIME DESTINATION ${PLUGIN_INSTALL_DIR})

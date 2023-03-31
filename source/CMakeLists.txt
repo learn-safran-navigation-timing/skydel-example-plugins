@@ -1,0 +1,8 @@
+add_subdirectory(library)
+
+add_subdirectory(hil_observer_plugin)
+add_subdirectory(position_observer_plugin)
+add_subdirectory(radio_time_observer_plugin)
+add_subdirectory(rapi_plugin)
+add_subdirectory(simple_plugin)
+add_subdirectory(transmitter_observer_plugin)
