@@ -26,7 +26,7 @@ QJsonObject SimplePlugin::getConfiguration() const
 
 QWidget* SimplePlugin::createUI()
 {
-  auto view = new SimplePluginView;
+  auto view = new SimplePluginView(m_instanceName);
 
   view->setNotification(m_notificationMessage, m_notificationType);
 
@@ -49,4 +49,9 @@ QWidget* SimplePlugin::createUI()
   });
 
   return view;
+}
+
+void SimplePlugin::setInstanceName(const QString& instanceName)
+{
+  m_instanceName = instanceName;
 }

@@ -17,12 +17,14 @@ public:
   QJsonObject getConfiguration() const override;
   QWidget* createUI() override;
   inline void initialize() override {}
+  void setInstanceName(const QString& instanceName) override;
 
 signals:
   void configurationChanged();
 
 private:
   QString m_logPath;
+  QString m_instanceName;
   SkydelNotifierInterface* m_skydelNotifier;
   QString m_notificationMessage {"Hello Skydel!"};
   SkydelNotifierInterface::Type m_notificationType {SkydelNotifierInterface::Type::WARNING};
