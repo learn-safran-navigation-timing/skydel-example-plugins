@@ -21,6 +21,7 @@ public:
 
 signals:
   void buttonUpdateClicked();
+  void buttonPostSetterCommandClicked();
 
 private:
   Ui::RapiPluginView* m_ui;
