@@ -5,8 +5,8 @@
 #include "gen/GetVisibleSVResult.h"
 #include "gen/SetLeapSecond.h"
 #include "gen/SetStartTimeOffset.h"
-#include "skydel_command_handler.h"
-#include "skydel_core_interface.h"
+#include "skydel_plug_ins/skydel_command_handler.h"
+#include "skydel_plug_ins/skydel_core_interface.h"
 
 using SetterCommand = Sdx::Cmd::SetLeapSecond;
 using ActionCommand = Sdx::Cmd::SetStartTimeOffset;

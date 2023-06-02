@@ -3,7 +3,7 @@
 
 #include <optional>
 
-#include "skydel_plug_ins/rapi_plugin_command_handler.h"
+#include "rapi_plugin_command_handler.h"
 #include "skydel_plug_ins/skydel_command_handler_access.h"
 #include "skydel_plug_ins/skydel_plugin.h"
 #include "skydel_plug_ins/skydel_rapi_access.h"
