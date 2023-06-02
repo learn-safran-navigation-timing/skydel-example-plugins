@@ -19,7 +19,7 @@ find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
 
 # Skydel Plugins SDK
 add_library(SkydelPlugin INTERFACE)
-target_include_directories(SkydelPlugin INTERFACE include )
+target_include_directories(SkydelPlugin INTERFACE include)
 target_link_libraries(SkydelPlugin INTERFACE Qt5::Core Qt5::Widgets)
 
 # Example Plugins

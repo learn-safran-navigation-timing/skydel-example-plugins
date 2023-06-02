@@ -6,9 +6,13 @@
 
 #include "ui_simple_plugin_view.h"
 
-SimplePluginView::SimplePluginView(QWidget* parent) : QWidget(parent), m_ui(new Ui::SimplePluginView)
+SimplePluginView::SimplePluginView(const QString& instanceName, QWidget* parent) :
+  QWidget(parent),
+  m_ui(new Ui::SimplePluginView)
 {
   m_ui->setupUi(this);
+
+  m_ui->instanceName->setText(instanceName);
 
   connect(m_ui->sendNotification, &QPushButton::clicked, this, &SimplePluginView::sendNotificationClicked);
   connect(m_ui->message, &QLineEdit::textChanged, this, &SimplePluginView::messageChanged);

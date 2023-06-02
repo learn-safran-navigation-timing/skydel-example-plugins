@@ -5,6 +5,10 @@
 #include "all_commands.h"
 #include "rapi_plugin_view.h"
 
+RapiPlugin::RapiPlugin() : m_commandHandler(commandExecutor())
+{
+}
+
 QWidget* RapiPlugin::createUI()
 {
   auto view = new RapiPluginView;
@@ -14,6 +18,10 @@ QWidget* RapiPlugin::createUI()
       if (auto simulatorStateResult = Sdx::Cmd::SimulatorStateResult::dynamicCast(result))
         view->setSimulatorState(QString::fromStdString(simulatorStateResult->state()));
     });
+  });
+
+  connect(view, &RapiPluginView::buttonPostSetterCommandClicked, this, [this]() {
+    thisPost(SetterCommand::create(1));
   });
 
   return view;

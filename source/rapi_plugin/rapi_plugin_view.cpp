@@ -10,6 +10,7 @@ RapiPluginView::RapiPluginView(QWidget* parent) : QWidget(parent), m_ui(new Ui::
   m_ui->setupUi(this);
 
   connect(m_ui->buttonUpdate, &QPushButton::clicked, this, &RapiPluginView::buttonUpdateClicked);
+  connect(m_ui->buttonPostSetterCommand, &QPushButton::clicked, this, &RapiPluginView::buttonPostSetterCommandClicked);
 }
 
 RapiPluginView::~RapiPluginView()

@@ -12,7 +12,7 @@ class SimplePluginView : public QWidget
 {
   Q_OBJECT
 public:
-  explicit SimplePluginView(QWidget* parent = nullptr);
+  explicit SimplePluginView(const QString& instanceName, QWidget* parent = nullptr);
   ~SimplePluginView();
 
   void setNotification(const QString& message, int type);
