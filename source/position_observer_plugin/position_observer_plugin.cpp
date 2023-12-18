@@ -21,7 +21,7 @@ void PositionObserverPlugin::setConfiguration(const QString&, const QJsonObject&
 
   if (configuration.contains("port"))
   {
-    m_port = configuration["port"].toInt();
+    m_port = static_cast<uint16_t>(configuration["port"].toInt());
   }
 
   emit configurationChanged();
@@ -60,7 +60,7 @@ QWidget* PositionObserverPlugin::createUI()
   });
 
   connect(view, &PositionObserverView::portChanged, [this](int port) {
-    m_port = port;
+    m_port = static_cast<uint16_t>(port);
     m_skydelNotifier->setDirty();
   });
 

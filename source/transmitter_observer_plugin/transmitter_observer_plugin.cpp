@@ -23,7 +23,7 @@ void TransmitterObserverPlugin::setConfiguration(const QString&, const QJsonObje
 
   if (configuration.contains("port"))
   {
-    m_port = configuration["port"].toInt();
+    m_port = static_cast<uint16_t>(configuration["port"].toInt());
   }
 
   emit configurationChanged();
@@ -62,7 +62,7 @@ QWidget* TransmitterObserverPlugin::createUI()
   });
 
   connect(view, &TransmitterObserverView::portChanged, [this](int port) {
-    m_port = port;
+    m_port = static_cast<uint16_t>(port);
     m_skydelNotifier->setDirty();
   });
 

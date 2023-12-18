@@ -44,7 +44,7 @@ void DelayedBroadcaster::handleWorkerError(QString errorMessage)
 DelayedBroadcasterWorker::DelayedBroadcasterWorker(const QHostAddress& ipAddress, int port) :
   QObject(),
   m_address(ipAddress),
-  m_port(port)
+  m_port(static_cast<uint16_t>(port))
 {
 }
 
