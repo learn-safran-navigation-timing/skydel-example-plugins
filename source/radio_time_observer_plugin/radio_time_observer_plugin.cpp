@@ -26,7 +26,7 @@ void RadioTimeObserverPlugin::setConfiguration(const QString&, const QJsonObject
 
   if (configuration.contains("port"))
   {
-    m_port = configuration["port"].toInt();
+    m_port = static_cast<uint16_t>(configuration["port"].toInt());
   }
 
   emit configurationChanged();
@@ -65,7 +65,7 @@ QWidget* RadioTimeObserverPlugin::createUI()
   });
 
   connect(view, &RadioTimeObserverView::portChanged, [this](int port) {
-    m_port = port;
+    m_port = static_cast<uint16_t>(port);
     m_skydelNotifier->setDirty();
   });
 
