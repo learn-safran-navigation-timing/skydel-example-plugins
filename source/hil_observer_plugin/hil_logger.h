@@ -1,11 +1,10 @@
-#ifndef HIL_LOGGER_H
-#define HIL_LOGGER_H
+#pragma once
 
 #include <QFile>
 
 #include "skydel_plug_ins/skydel_plugin.h"
 
-// Runtime hil observer implementation
+// Runtime HIL observer implementation
 class HilLogger : public SkydelRuntimeHilObserver
 {
   Q_OBJECT
@@ -29,5 +28,3 @@ private:
   SkydelNotifierInterface* m_skydelNotifier;
   int64_t m_displayedPosTimestamp; // ms
 };
-
-#endif // HIL_LOGGER_H

@@ -1,5 +1,7 @@
 #include "rapi_plugin_command_handler.h"
 
+#include <QString>
+
 RapiPluginCommandHandler::RapiPluginCommandHandler(SkydelCommandExecutor& commandExecutor) :
   SkydelCommandHandler<RapiPluginCommandHandler>(commandExecutor)
 {

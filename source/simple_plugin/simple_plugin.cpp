@@ -24,9 +24,9 @@ QJsonObject SimplePlugin::getConfiguration() const
   return {{"message", m_notificationMessage}, {"type", static_cast<int>(m_notificationType)}};
 }
 
-QWidget* SimplePlugin::createUI()
+SkydelWidgets SimplePlugin::createUI()
 {
-  auto view = new SimplePluginView(m_instanceName);
+  auto view = new SimplePluginView(PLUGIN_IID);
 
   view->setNotification(m_notificationMessage, m_notificationType);
 
@@ -48,10 +48,5 @@ QWidget* SimplePlugin::createUI()
     view->setNotification(m_notificationMessage, m_notificationType);
   });
 
-  return view;
-}
-
-void SimplePlugin::setInstanceName(const QString& instanceName)
-{
-  m_instanceName = instanceName;
+  return {view};
 }

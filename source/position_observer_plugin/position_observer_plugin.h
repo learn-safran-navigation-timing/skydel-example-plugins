@@ -1,5 +1,4 @@
-#ifndef POSITION_OBSERVER_PLUGIN_H
-#define POSITION_OBSERVER_PLUGIN_H
+#pragma once
 
 #include <QString>
 #include <QUdpSocket>
@@ -18,38 +17,31 @@ public:
   inline void setNotifier(SkydelNotifierInterface* notifier) override { m_skydelNotifier = notifier; }
   void setConfiguration(const QString& version, const QJsonObject& configuration) override;
   QJsonObject getConfiguration() const override;
-  QWidget* createUI() override;
+  SkydelWidgets createUI() override;
   inline void initialize() override {}
 
   // SkydelPositionObserverInterface
   inline SkydelRuntimePositionObserver* createRuntimePositionObserver() override
   {
-    return new PositionLogger(m_skydelNotifier,
-                              m_address,
-                              m_port,
-                              m_enableNetworkLogging,
-                              m_enableFileLogging,
-                              m_logPath);
+    return (m_enableFileLogging || m_enableNetworkLogging) ? new PositionLogger(m_skydelNotifier,
+                                                                                m_address,
+                                                                                m_port,
+                                                                                m_enableNetworkLogging,
+                                                                                m_enableFileLogging,
+                                                                                m_logPath)
+                                                           : nullptr;
   }
 
 signals:
   void configurationChanged();
 
 private:
-  bool m_enableFileLogging {true};
-  bool m_enableNetworkLogging {true};
+  bool m_enableFileLogging {false};
+  bool m_enableNetworkLogging {false};
   QHostAddress m_address {QHostAddress(QHostAddress::LocalHost)};
   uint16_t m_port {161};
   QString m_logPath;
   SkydelNotifierInterface* m_skydelNotifier;
 };
 
-// Required boilerplate
-class PositionObserverPluginFactory : public QObject, public SkydelPlugin<PositionObserverPlugin>
-{
-  Q_OBJECT
-  Q_PLUGIN_METADATA(IID "PositionObserverPlugin" FILE "position_observer_plugin.json")
-  Q_INTERFACES(SkydelPluginBase)
-};
-
-#endif // POSITION_OBSERVER_PLUGIN_H
+REGISTER_SKYDEL_PLUGIN(PositionObserverPlugin)

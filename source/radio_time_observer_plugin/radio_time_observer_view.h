@@ -1,5 +1,4 @@
-#ifndef RADIO_TIME_OBSERVER_VIEW_H
-#define RADIO_TIME_OBSERVER_VIEW_H
+#pragma once
 
 #include <QLabel>
 #include <QWidget>
@@ -42,5 +41,3 @@ private:
   QList<SkydelRuntimePositionObserver::TimedPosition> m_processedPositions;
   Ui::RadioTimeObserverView* m_ui;
 };
-
-#endif // RADIO_TIME_OBSERVER_VIEW_H

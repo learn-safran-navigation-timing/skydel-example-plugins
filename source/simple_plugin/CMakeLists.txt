@@ -14,4 +14,7 @@ target_link_libraries(simple_plugin PUBLIC
 
 set_target_properties(simple_plugin PROPERTIES CXX_STANDARD 17)
 
+target_compile_definitions(simple_plugin PRIVATE PLUGIN_IID="simple_plugin"
+                                                 PLUGIN_FILE="simple_plugin.json")
+
 install(TARGETS simple_plugin RUNTIME DESTINATION ${PLUGIN_INSTALL_DIR})

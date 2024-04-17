@@ -1,5 +1,4 @@
-#ifndef LOGGER_H
-#define LOGGER_H
+#pragma once
 
 #include <QFile>
 #include <QHostAddress>
@@ -40,5 +39,3 @@ private:
   QFile m_file;
   QUdpSocket m_socket;
 };
-
-#endif // LOGGER_H

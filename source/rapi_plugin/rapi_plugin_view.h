@@ -1,5 +1,4 @@
-#ifndef RAPI_PLUGIN_VIEW_H
-#define RAPI_PLUGIN_VIEW_H
+#pragma once
 
 #include <QString>
 #include <QWidget>
@@ -26,5 +25,3 @@ signals:
 private:
   Ui::RapiPluginView* m_ui;
 };
-
-#endif // RAPI_PLUGIN_VIEW_H

@@ -1,5 +1,4 @@
-#ifndef RUNTIME_TRANSMITTER_OBSERVER_H
-#define RUNTIME_TRANSMITTER_OBSERVER_H
+#pragma once
 
 #include <QFile>
 #include <QUdpSocket>
@@ -23,5 +22,3 @@ signals:
   void updateTransmitters(const SkydelRuntimeTransmitterObserver::TimedTransmitters& txs);
   void lockConfiguration(bool lock);
 };
-
-#endif // RUNTIME_TRANSMITTER_OBSERVER_H

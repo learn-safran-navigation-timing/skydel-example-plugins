@@ -1,5 +1,4 @@
-﻿#ifndef DELAYED_BROADCASTER_H
-#define DELAYED_BROADCASTER_H
+﻿#pragma once
 
 #include <QHostAddress>
 #include <QObject>
@@ -83,5 +82,3 @@ private:
   bool m_error {false};
   QString m_errorMessage {""};
 };
-
-#endif // DELAYED_BROADCASTER_H

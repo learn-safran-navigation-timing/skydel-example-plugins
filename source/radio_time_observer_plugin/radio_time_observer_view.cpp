@@ -1,9 +1,9 @@
 #include "radio_time_observer_view.h"
 
-#include <math.h>
-
 #include <QCheckBox>
 #include <QComboBox>
+
+#include <cmath>
 
 #include "ui_radio_time_observer_view.h"
 
@@ -26,21 +26,25 @@ RadioTimeObserverView::~RadioTimeObserverView()
 
 void RadioTimeObserverView::setEnableFileLogging(bool enable)
 {
+  QSignalBlocker blocker {m_ui->fileLogging};
   m_ui->fileLogging->setChecked(enable);
 }
 
 void RadioTimeObserverView::setEnableNetworkLogging(bool enable)
 {
+  QSignalBlocker blocker {m_ui->networkLogging};
   m_ui->networkLogging->setChecked(enable);
 }
 
 void RadioTimeObserverView::setAddress(const QString& address)
 {
+  QSignalBlocker blocker {m_ui->address};
   m_ui->address->setText(address);
 }
 
 void RadioTimeObserverView::setPort(int port)
 {
+  QSignalBlocker blocker {m_ui->portSpinBox};
   m_ui->portSpinBox->setValue(port);
 }
 

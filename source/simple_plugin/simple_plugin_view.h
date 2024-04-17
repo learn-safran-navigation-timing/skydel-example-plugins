@@ -1,5 +1,4 @@
-#ifndef SIMPLE_PLUGIN_VIEW_H
-#define SIMPLE_PLUGIN_VIEW_H
+#pragma once
 
 #include <QWidget>
 
@@ -12,7 +11,7 @@ class SimplePluginView : public QWidget
 {
   Q_OBJECT
 public:
-  explicit SimplePluginView(const QString& instanceName, QWidget* parent = nullptr);
+  explicit SimplePluginView(const QString& name, QWidget* parent = nullptr);
   ~SimplePluginView();
 
   void setNotification(const QString& message, int type);
@@ -25,5 +24,3 @@ signals:
 private:
   Ui::SimplePluginView* m_ui;
 };
-
-#endif // SIMPLE_PLUGIN_VIEW_H

@@ -5,10 +5,7 @@
 
 void HilObserverPlugin::setConfiguration(const QString&, const QJsonObject& configuration)
 {
-  if (configuration.contains("enableFileLogging") && configuration["enableFileLogging"].isBool())
-  {
-    m_enableFileLogging = configuration["enableFileLogging"].toBool();
-  }
+  m_enableFileLogging = configuration["enableFileLogging"].toBool(false);
 
   emit configurationChanged();
 }
@@ -18,7 +15,7 @@ QJsonObject HilObserverPlugin::getConfiguration() const
   return {{"enableFileLogging", m_enableFileLogging}};
 }
 
-QWidget* HilObserverPlugin::createUI()
+SkydelWidgets HilObserverPlugin::createUI()
 {
   auto view = new HilObserverView;
 
@@ -33,10 +30,10 @@ QWidget* HilObserverPlugin::createUI()
     view->setEnableFileLogging(m_enableFileLogging);
   });
 
-  return view;
+  return {view};
 }
 
 SkydelRuntimeHilObserver* HilObserverPlugin::createRuntimeHilObserver()
 {
-  return new HilLogger(m_logPath, m_enableFileLogging, m_skydelNotifier);
+  return m_enableFileLogging ? new HilLogger(m_logPath, m_enableFileLogging, m_skydelNotifier) : nullptr;
 }

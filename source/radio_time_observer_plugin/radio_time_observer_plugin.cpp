@@ -9,25 +9,12 @@ RadioTimeObserverPlugin::RadioTimeObserverPlugin(QObject* parent) : QObject(pare
 
 void RadioTimeObserverPlugin::setConfiguration(const QString&, const QJsonObject& configuration)
 {
-  if (configuration.contains("enableFileLogging") && configuration["enableFileLogging"].isBool())
-  {
-    m_enableFileLogging = configuration["enableFileLogging"].toBool();
-  }
-
-  if (configuration.contains("enableNetworkLogging") && configuration["enableNetworkLogging"].isBool())
-  {
-    m_enableNetworkLogging = configuration["enableNetworkLogging"].toBool();
-  }
-
-  if (configuration.contains("address") && configuration["address"].isString())
-  {
-    m_address = QHostAddress(configuration["address"].toString());
-  }
-
-  if (configuration.contains("port"))
-  {
-    m_port = static_cast<uint16_t>(configuration["port"].toInt());
-  }
+  m_enableFileLogging = configuration["enableFileLogging"].toBool(false);
+  m_enableNetworkLogging = configuration["enableNetworkLogging"].toBool(false);
+  m_address = (configuration.contains("address") && configuration["address"].isString())
+                ? QHostAddress(configuration["address"].toString())
+                : QHostAddress(QHostAddress::LocalHost);
+  m_port = static_cast<uint16_t>(configuration["port"].toInt(161));
 
   emit configurationChanged();
 }
@@ -40,7 +27,7 @@ QJsonObject RadioTimeObserverPlugin::getConfiguration() const
           {"port", m_port}};
 }
 
-QWidget* RadioTimeObserverPlugin::createUI()
+SkydelWidgets RadioTimeObserverPlugin::createUI()
 {
   auto view = new RadioTimeObserverView;
 
@@ -80,11 +67,14 @@ QWidget* RadioTimeObserverPlugin::createUI()
   connect(&m_logger, &RadioTimeLogger::updateRadioTime, view, &RadioTimeObserverView::updateRadioTime);
   connect(this, &RadioTimeObserverPlugin::lockConfiguration, view, &RadioTimeObserverView::lockConfiguration);
 
-  return view;
+  return {view};
 }
 
 SkydelRuntimeRadioTimeObserver* RadioTimeObserverPlugin::createRuntimeRadioTimeObserver()
 {
+  if (!isEnabled())
+    return nullptr;
+
   emit lockConfiguration(true);
   m_logger.reset(m_skydelNotifier, m_address, m_port, m_enableNetworkLogging, m_enableFileLogging, m_logPath);
   auto* frtoPtr = new ForwardingRadioTimeObserver;
@@ -99,6 +89,9 @@ SkydelRuntimeRadioTimeObserver* RadioTimeObserverPlugin::createRuntimeRadioTimeO
 
 SkydelRuntimePositionObserver* RadioTimeObserverPlugin::createRuntimePositionObserver()
 {
+  if (!isEnabled())
+    return nullptr;
+
   auto* fpoPtr = new ForwardingPositionObserver();
   connect(fpoPtr, &ForwardingPositionObserver::newPosition, &m_logger, &RadioTimeLogger::pushPosition);
 
@@ -109,4 +102,9 @@ void RadioTimeObserverPlugin::onRuntimeObjectsDestroyed()
 {
   m_logger.close();
   emit lockConfiguration(false);
+}
+
+bool RadioTimeObserverPlugin::isEnabled() const
+{
+  return (m_enableFileLogging || m_enableNetworkLogging);
 }

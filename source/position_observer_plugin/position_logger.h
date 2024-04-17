@@ -1,5 +1,4 @@
-#ifndef POSITION_LOGGER_H
-#define POSITION_LOGGER_H
+#pragma once
 
 #include <QFile>
 #include <QUdpSocket>
@@ -38,4 +37,3 @@ private:
   QFile m_file;
   QUdpSocket m_socket;
 };
-#endif // POSITION_LOGGER_H

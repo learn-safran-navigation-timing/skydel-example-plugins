@@ -26,21 +26,25 @@ TransmitterObserverView::~TransmitterObserverView()
 
 void TransmitterObserverView::setEnableFileLogging(bool enable)
 {
+  QSignalBlocker blocker {m_ui->fileLogging};
   m_ui->fileLogging->setChecked(enable);
 }
 
 void TransmitterObserverView::setEnableNetworkLogging(bool enable)
 {
+  QSignalBlocker blocker {m_ui->networkLogging};
   m_ui->networkLogging->setChecked(enable);
 }
 
 void TransmitterObserverView::setAddress(const QString& address)
 {
+  QSignalBlocker blocker {m_ui->address};
   m_ui->address->setText(address);
 }
 
 void TransmitterObserverView::setPort(int port)
 {
+  QSignalBlocker blocker {m_ui->portSpinBox};
   m_ui->portSpinBox->setValue(port);
 }
 

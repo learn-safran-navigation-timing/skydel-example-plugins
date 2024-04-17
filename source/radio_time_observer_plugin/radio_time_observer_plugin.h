@@ -1,5 +1,4 @@
-#ifndef RADIO_TIME_OBSERVER_PLUGIN_H
-#define RADIO_TIME_OBSERVER_PLUGIN_H
+#pragma once
 
 #include <QObject>
 #include <QString>
@@ -24,7 +23,7 @@ public:
   inline void setNotifier(SkydelNotifierInterface* notifier) override { m_skydelNotifier = notifier; }
   void setConfiguration(const QString& version, const QJsonObject& configuration) override;
   QJsonObject getConfiguration() const override;
-  QWidget* createUI() override;
+  SkydelWidgets createUI() override;
   inline void initialize() override {}
 
   // SkydelRadioTimeObserverInterface
@@ -41,21 +40,15 @@ signals:
   void lockConfiguration(bool lock);
 
 private:
+  bool isEnabled() const;
+
   QHostAddress m_address {QHostAddress(QHostAddress::LocalHost)};
   QString m_logPath;
   SkydelNotifierInterface* m_skydelNotifier;
   RadioTimeLogger m_logger;
   uint16_t m_port {1610};
-  bool m_enableFileLogging {true};
-  bool m_enableNetworkLogging {true};
+  bool m_enableFileLogging {false};
+  bool m_enableNetworkLogging {false};
 };
 
-// Required boilerplate
-class RadioTimeObserverPluginFactory : public QObject, public SkydelPlugin<RadioTimeObserverPlugin>
-{
-  Q_OBJECT
-  Q_PLUGIN_METADATA(IID "RadioTimeObserverPlugin" FILE "radio_time_observer_plugin.json")
-  Q_INTERFACES(SkydelPluginBase)
-};
-
-#endif // RADIO_TIME_OBSERVER_PLUGIN_H
+REGISTER_SKYDEL_PLUGIN(RadioTimeObserverPlugin)

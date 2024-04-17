@@ -1,5 +1,4 @@
-#ifndef RUNTIME_OBJECTS_H
-#define RUNTIME_OBJECTS_H
+#pragma once
 
 #include "skydel_plug_ins/skydel_position_observer_interface.h"
 #include "skydel_plug_ins/skydel_radio_time_observer_interface.h"
@@ -34,5 +33,3 @@ public:
 signals:
   void newPosition(const SkydelRuntimePositionObserver::TimedPosition& p);
 };
-
-#endif // RUNTIME_OBJECTS_H
