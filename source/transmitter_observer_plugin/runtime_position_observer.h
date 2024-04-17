@@ -1,5 +1,4 @@
-#ifndef RUNTIME_POSITION_OBSERVER_H
-#define RUNTIME_POSITION_OBSERVER_H
+#pragma once
 
 #include "skydel_plug_ins/skydel_plugin.h"
 #include "skydel_plug_ins/skydel_position_observer_interface.h"
@@ -18,5 +17,3 @@ public:
 signals:
   void updatePosition(const SkydelRuntimePositionObserver::TimedPosition& p);
 };
-
-#endif // RUNTIME_POSITION_OBSERVER_H

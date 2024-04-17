@@ -1,5 +1,4 @@
-#ifndef TRANSMITTER_OBSERVER_VIEW_H
-#define TRANSMITTER_OBSERVER_VIEW_H
+#pragma once
 
 #include <QLabel>
 #include <QWidget>
@@ -41,5 +40,3 @@ private:
 
   Ui::TransmitterObserverView* m_ui;
 };
-
-#endif // TRANSMITTER_OBSERVER_VIEW_H

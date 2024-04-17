@@ -1,5 +1,4 @@
-#ifndef HIL_OBSERVER_VIEW_H
-#define HIL_OBSERVER_VIEW_H
+#pragma once
 
 #include <QLabel>
 #include <QWidget>
@@ -33,4 +32,3 @@ private:
 
   Ui::HilObserverView* m_ui;
 };
-#endif // HIL_OBSERVER_VIEW_H

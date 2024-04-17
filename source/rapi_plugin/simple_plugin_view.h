@@ -1,5 +1,4 @@
-#ifndef SIMPLE_PLUGIN_VIEW_H
-#define SIMPLE_PLUGIN_VIEW_H
+#pragma once
 
 #include <QWidget>
 
@@ -25,5 +24,3 @@ signals:
 private:
   Ui::SimplePluginView* m_ui;
 };
-
-#endif // SIMPLE_PLUGIN_VIEW_H

@@ -1,5 +1,4 @@
-#ifndef TRANSMITTER_OBSERVER_PLUGIN_H
-#define TRANSMITTER_OBSERVER_PLUGIN_H
+#pragma once
 
 #include <QString>
 #include <QUdpSocket>
@@ -22,7 +21,7 @@ public:
   inline void setNotifier(SkydelNotifierInterface* notifier) override { m_skydelNotifier = notifier; }
   void setConfiguration(const QString& version, const QJsonObject& configuration) override;
   QJsonObject getConfiguration() const override;
-  QWidget* createUI() override;
+  SkydelWidgets createUI() override;
   inline void initialize() override {}
 
   // SkydelTransmitterObserverInterface
@@ -40,8 +39,10 @@ private slots:
   void onSimulationEnd();
 
 private:
-  bool m_enableFileLogging {true};
-  bool m_enableNetworkLogging {true};
+  bool isEnabled() const;
+
+  bool m_enableFileLogging {false};
+  bool m_enableNetworkLogging {false};
   uint16_t m_port {161};
   Logger m_logger;
   QHostAddress m_address {QHostAddress(QHostAddress::LocalHost)};
@@ -49,12 +50,4 @@ private:
   SkydelNotifierInterface* m_skydelNotifier;
 };
 
-// Required boilerplate
-class TransmitterObserverPluginFactory : public QObject, public SkydelPlugin<TransmitterObserverPlugin>
-{
-  Q_OBJECT
-  Q_PLUGIN_METADATA(IID "TransmitterObserverPlugin" FILE "transmitter_observer_plugin.json")
-  Q_INTERFACES(SkydelPluginBase)
-};
-
-#endif // TRANSMITTER_OBSERVER_PLUGIN_H
+REGISTER_SKYDEL_PLUGIN(TransmitterObserverPlugin)

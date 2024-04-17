@@ -1,5 +1,4 @@
-﻿#ifndef RADIO_TIME_LOGGER_H
-#define RADIO_TIME_LOGGER_H
+﻿#pragma once
 
 #include <QFile>
 #include <QObject>
@@ -47,5 +46,3 @@ private:
   QString m_logPath;
   QFile m_file;
 };
-
-#endif // RADIO_TIME_LOGGER_H

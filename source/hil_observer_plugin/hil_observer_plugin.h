@@ -1,5 +1,4 @@
-#ifndef HIL_OBSERVER_PLUGIN_H
-#define HIL_OBSERVER_PLUGIN_H
+#pragma once
 
 #include "skydel_plug_ins/skydel_plugin.h"
 
@@ -14,7 +13,7 @@ public:
   inline void setNotifier(SkydelNotifierInterface* notifier) override { m_skydelNotifier = notifier; }
   void setConfiguration(const QString&, const QJsonObject& configuration) override;
   QJsonObject getConfiguration() const override;
-  QWidget* createUI() override;
+  SkydelWidgets createUI() override;
   inline void initialize() override {}
 
   // SkydelHilObserverInterface
@@ -25,16 +24,8 @@ signals:
 
 private:
   QString m_logPath;
-  bool m_enableFileLogging;
+  bool m_enableFileLogging {false};
   SkydelNotifierInterface* m_skydelNotifier;
 };
 
-// Required boilerplate
-class HilObserverPluginFactory : public QObject, public SkydelPlugin<HilObserverPlugin>
-{
-  Q_OBJECT
-  Q_PLUGIN_METADATA(IID "HilObserverPlugin" FILE "hil_observer_plugin.json")
-  Q_INTERFACES(SkydelPluginBase)
-};
-
-#endif // HIL_OBSERVER_PLUGIN_H
+REGISTER_SKYDEL_PLUGIN(HilObserverPlugin)

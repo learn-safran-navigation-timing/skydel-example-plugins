@@ -15,4 +15,7 @@ target_link_libraries(rapi_plugin PUBLIC
 
 set_target_properties(rapi_plugin PROPERTIES CXX_STANDARD 17)
 
+target_compile_definitions(rapi_plugin PRIVATE PLUGIN_IID="rapi_plugin"
+                                               PLUGIN_FILE="rapi_plugin.json")
+
 install(TARGETS rapi_plugin RUNTIME DESTINATION ${PLUGIN_INSTALL_DIR})

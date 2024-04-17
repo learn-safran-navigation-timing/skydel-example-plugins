@@ -1,5 +1,4 @@
-#ifndef POSITION_OBSERVER_VIEW_H
-#define POSITION_OBSERVER_VIEW_H
+#pragma once
 
 #include <QLabel>
 #include <QWidget>
@@ -39,5 +38,3 @@ private:
 
   Ui::PositionObserverView* m_ui;
 };
-
-#endif // POSITION_OBSERVER_VIEW_H

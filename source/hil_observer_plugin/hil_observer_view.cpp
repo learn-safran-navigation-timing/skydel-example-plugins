@@ -20,6 +20,7 @@ HilObserverView::~HilObserverView()
 
 void HilObserverView::setEnableFileLogging(bool enable)
 {
+  QSignalBlocker blocker {m_ui->fileLogging};
   m_ui->fileLogging->setChecked(enable);
 }
 

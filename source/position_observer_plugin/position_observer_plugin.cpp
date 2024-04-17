@@ -4,25 +4,12 @@
 
 void PositionObserverPlugin::setConfiguration(const QString&, const QJsonObject& configuration)
 {
-  if (configuration.contains("enableFileLogging") && configuration["enableFileLogging"].isBool())
-  {
-    m_enableFileLogging = configuration["enableFileLogging"].toBool();
-  }
-
-  if (configuration.contains("enableNetworkLogging") && configuration["enableNetworkLogging"].isBool())
-  {
-    m_enableNetworkLogging = configuration["enableNetworkLogging"].toBool();
-  }
-
-  if (configuration.contains("address") && configuration["address"].isString())
-  {
-    m_address = QHostAddress(configuration["address"].toString());
-  }
-
-  if (configuration.contains("port"))
-  {
-    m_port = static_cast<uint16_t>(configuration["port"].toInt());
-  }
+  m_enableFileLogging = configuration["enableFileLogging"].toBool(false);
+  m_enableNetworkLogging = configuration["enableNetworkLogging"].toBool(false);
+  m_address = (configuration.contains("address") && configuration["address"].isString())
+                ? QHostAddress(configuration["address"].toString())
+                : QHostAddress(QHostAddress::LocalHost);
+  m_port = static_cast<uint16_t>(configuration["port"].toInt(161));
 
   emit configurationChanged();
 }
@@ -35,7 +22,7 @@ QJsonObject PositionObserverPlugin::getConfiguration() const
           {"port", m_port}};
 }
 
-QWidget* PositionObserverPlugin::createUI()
+SkydelWidgets PositionObserverPlugin::createUI()
 {
   auto view = new PositionObserverView;
 
@@ -71,5 +58,5 @@ QWidget* PositionObserverPlugin::createUI()
     view->setPort(static_cast<int>(m_port));
   });
 
-  return view;
+  return {view};
 }

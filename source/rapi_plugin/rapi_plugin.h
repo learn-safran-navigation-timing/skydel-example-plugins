@@ -1,7 +1,4 @@
-#ifndef RAPI_PLUGIN_H
-#define RAPI_PLUGIN_H
-
-#include <optional>
+#pragma once
 
 #include "rapi_plugin_command_handler.h"
 #include "skydel_plug_ins/skydel_command_handler_access.h"
@@ -15,6 +12,8 @@ class RapiPlugin :
   public SkydelRapiAccess,
   public SkydelCommandHandlerAccess
 {
+  Q_OBJECT
+
 public:
   RapiPlugin();
 
@@ -30,21 +29,12 @@ public:
   {
   }
   inline QJsonObject getConfiguration() const override { return QJsonObject {}; }
-  QWidget* createUI() override;
+  SkydelWidgets createUI() override;
   inline void initialize() override {}
-  void setInstanceName(const QString& name) override { setPluginInstanceName(name); }
 
 private:
   RapiPluginCommandHandler m_commandHandler;
   SkydelNotifierInterface* m_notifier;
 };
 
-// Required boilerplate
-class RapiPluginFactory : public QObject, public SkydelPlugin<RapiPlugin>
-{
-  Q_OBJECT
-  Q_PLUGIN_METADATA(IID "RapiPlugin" FILE "rapi_plugin.json")
-  Q_INTERFACES(SkydelPluginBase)
-};
-
-#endif // RAPI_PLUGIN_H
+REGISTER_SKYDEL_PLUGIN(RapiPlugin)

@@ -18,4 +18,7 @@ target_link_libraries(position_observer_plugin PUBLIC
 
 set_target_properties(position_observer_plugin PROPERTIES CXX_STANDARD 17)
 
+target_compile_definitions(position_observer_plugin PRIVATE PLUGIN_IID="position_observer_plugin"
+                                                            PLUGIN_FILE="position_observer_plugin.json")
+
 install(TARGETS position_observer_plugin RUNTIME DESTINATION ${PLUGIN_INSTALL_DIR})

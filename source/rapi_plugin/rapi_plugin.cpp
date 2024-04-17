@@ -1,15 +1,14 @@
 #include "rapi_plugin.h"
 
-#include <exception>
-
-#include "all_commands.h"
+#include "gen/GetSimulatorState.h"
+#include "gen/SimulatorStateResult.h"
 #include "rapi_plugin_view.h"
 
-RapiPlugin::RapiPlugin() : m_commandHandler(commandExecutor())
+RapiPlugin::RapiPlugin() : SkydelRapiAccess(PLUGIN_IID), m_commandHandler(commandExecutor())
 {
 }
 
-QWidget* RapiPlugin::createUI()
+SkydelWidgets RapiPlugin::createUI()
 {
   auto view = new RapiPluginView;
 
@@ -21,8 +20,12 @@ QWidget* RapiPlugin::createUI()
   });
 
   connect(view, &RapiPluginView::buttonPostSetterCommandClicked, this, [this]() {
-    thisPost(SetterCommand::create(1));
+    auto cmd = SetterCommand::create(1);
+    rapidjson::Value value {PLUGIN_IID};
+    const std::string key = "CmdTargetId";
+    cmd->setValue(key, value);
+    post(cmd);
   });
 
-  return view;
+  return {view};
 }

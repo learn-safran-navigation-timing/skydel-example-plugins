@@ -6,25 +6,12 @@
 
 void TransmitterObserverPlugin::setConfiguration(const QString&, const QJsonObject& configuration)
 {
-  if (configuration.contains("enableFileLogging") && configuration["enableFileLogging"].isBool())
-  {
-    m_enableFileLogging = configuration["enableFileLogging"].toBool();
-  }
-
-  if (configuration.contains("enableNetworkLogging") && configuration["enableNetworkLogging"].isBool())
-  {
-    m_enableNetworkLogging = configuration["enableNetworkLogging"].toBool();
-  }
-
-  if (configuration.contains("address") && configuration["address"].isString())
-  {
-    m_address = QHostAddress(configuration["address"].toString());
-  }
-
-  if (configuration.contains("port"))
-  {
-    m_port = static_cast<uint16_t>(configuration["port"].toInt());
-  }
+  m_enableFileLogging = configuration["enableFileLogging"].toBool(false);
+  m_enableNetworkLogging = configuration["enableNetworkLogging"].toBool(false);
+  m_address = (configuration.contains("address") && configuration["address"].isString())
+                ? QHostAddress(configuration["address"].toString())
+                : QHostAddress(QHostAddress::LocalHost);
+  m_port = static_cast<uint16_t>(configuration["port"].toInt(161));
 
   emit configurationChanged();
 }
@@ -37,7 +24,7 @@ QJsonObject TransmitterObserverPlugin::getConfiguration() const
           {"port", m_port}};
 }
 
-QWidget* TransmitterObserverPlugin::createUI()
+SkydelWidgets TransmitterObserverPlugin::createUI()
 {
   auto view = new TransmitterObserverView;
 
@@ -73,11 +60,14 @@ QWidget* TransmitterObserverPlugin::createUI()
     view->setPort(static_cast<int>(m_port));
   });
 
-  return view;
+  return {view};
 }
 
 SkydelRuntimeTransmitterObserver* TransmitterObserverPlugin::createRuntimeTransmitterObserver()
 {
+  if (!isEnabled())
+    return nullptr;
+
   m_logger.reset(m_address, m_port, m_enableNetworkLogging, m_enableFileLogging, m_logPath);
   auto* txObserver = new RuntimeTransmitterObserver();
 
@@ -92,6 +82,9 @@ SkydelRuntimeTransmitterObserver* TransmitterObserverPlugin::createRuntimeTransm
 
 SkydelRuntimePositionObserver* TransmitterObserverPlugin::createRuntimePositionObserver()
 {
+  if (!isEnabled())
+    return nullptr;
+
   auto* positionObserver = new RuntimePositionObserver();
 
   connect(positionObserver,
@@ -115,4 +108,9 @@ void TransmitterObserverPlugin::onNewPositionUpdate(const SkydelRuntimePositionO
 void TransmitterObserverPlugin::onSimulationEnd()
 {
   m_logger.close();
+}
+
+bool TransmitterObserverPlugin::isEnabled() const
+{
+  return (m_enableFileLogging || m_enableNetworkLogging);
 }
