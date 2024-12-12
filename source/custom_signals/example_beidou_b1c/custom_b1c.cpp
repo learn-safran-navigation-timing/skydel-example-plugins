@@ -25,7 +25,7 @@ struct CustomB1C::Pimpl
 CustomB1C::CustomB1C(const Sdx::CS::InitData& csInitData) : m(std::make_unique<Pimpl>(csInitData.startSecondOfWeek))
 {
   auto navGenPtr = CustomB1CNavMsg::makeSharedB1CNavMsgFromFile(
-      (std::filesystem::path(csInitData.pathToXml) / DOWNLINK_FILENAME).string());
+    (std::filesystem::path(csInitData.pathToXml) / DOWNLINK_FILENAME).string());
   m->csDataCode.setNavMessageGenerator(navGenPtr);
   m->csNavMsg.setNavMessageGenerator(navGenPtr);
 }
@@ -42,12 +42,12 @@ SkydelCustomSignalNavMsg* CustomB1C::getNavMsg()
 SkydelCustomSignalCode* CustomB1C::getCode(const char* name)
 {
   if (name == std::string(CustomB1CDataCode::xmlCodeName))
-    {
-      return &m->csDataCode;
-    }
+  {
+    return &m->csDataCode;
+  }
   else if (name == std::string(CustomB1CPilotCode::xmlCodeName))
-    {
-      return &m->csPilotCode;
-    }
+  {
+    return &m->csPilotCode;
+  }
   return nullptr;
 }
