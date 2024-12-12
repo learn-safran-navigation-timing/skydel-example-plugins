@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomSignals>
+    <CustomSignal Name="CustomB1cData" Version="1.0" NavMsg="True">
+        <Constellation>BEIDOU</Constellation>
+        <CentralFreq>1575420000</CentralFreq>
+        <Bandwidth>1023000</Bandwidth>
+        <ModulationCoef Real="0.5" Imag="0" />
+        <Codes>
+            <Code Id="B1CData" />
+        </Codes>
+        <Subcarriers>
+            <Subcarrier Id="subcarrier1" Rate="1023000">
+                <Coef>1|-1</Coef>
+            </Subcarrier>
+        </Subcarriers>
+    </CustomSignal>
+    <CustomSignal Name="CustomB1cPilotB" Version="1.0" NavMsg="False">
+        <Constellation>BEIDOU</Constellation>
+        <CentralFreq>1575420000</CentralFreq>
+        <Bandwidth>1023000</Bandwidth>
+        <ModulationCoef Real="0.30151134457776363" Imag="0" />
+        <Codes>
+            <Code Id="B1CPilot" />
+        </Codes>
+        <Subcarriers>
+            <Subcarrier Id="subcarrier1" Rate="6138000">
+                <Coef>1|-1</Coef>
+            </Subcarrier>
+        </Subcarriers>
+    </CustomSignal>
+    <CustomSignal Name="CustomB1cPilotA" Version="1.0" NavMsg="False">
+        <Constellation>BEIDOU</Constellation>
+        <CentralFreq>1575420000</CentralFreq>
+        <Bandwidth>1023000</Bandwidth>
+        <ModulationCoef Real="0" Imag="0.8118441408859887" />
+        <Codes>
+            <Code Id="B1CPilot" />
+        </Codes>
+        <Subcarriers>
+            <Subcarrier Id="subcarrier1" Rate="1023000">
+                <Coef>1|-1</Coef>
+            </Subcarrier>
+        </Subcarriers>
+    </CustomSignal>
+</CustomSignals>

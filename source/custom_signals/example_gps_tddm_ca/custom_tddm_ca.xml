@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomSignals>
+    <CustomSignal Name="CustomTddmCa" Version="1.0" NavMsg="True">
+        <Constellation>GPS</Constellation>
+        <CentralFreq>1575420000</CentralFreq>
+        <Bandwidth>12500000</Bandwidth>
+        <ModulationCoef Real="0" Imag="1" />
+        <Codes>
+            <Code Id="TDDM_L1CA" />
+        </Codes>
+    </CustomSignal>
+</CustomSignals>
