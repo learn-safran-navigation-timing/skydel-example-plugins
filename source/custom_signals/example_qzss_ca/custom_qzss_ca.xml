@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomSignals>
+    <CustomSignal Name="CustomQzssCa" Version="1.0" NavMsg="True">
+        <Constellation>QZSS</Constellation>
+        <CentralFreq>1575420000</CentralFreq>
+        <Bandwidth>2046000</Bandwidth>
+        <ModulationCoef Real="0" Imag="1" />
+        <Codes>
+            <Code Id="L1CA" />
+        </Codes>
+    </CustomSignal>
+    <CustomSignal Name="CustomCustomCa" Version="1.0" NavMsg="True">
+        <Constellation>CUSTOM</Constellation>
+        <CentralFreq>1575420000</CentralFreq>
+        <Bandwidth>2046000</Bandwidth>
+        <ModulationCoef Real="0" Imag="1" />
+        <Codes>
+            <Code Id="L1CA" />
+        </Codes>
+    </CustomSignal>
+</CustomSignals>

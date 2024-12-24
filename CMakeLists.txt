@@ -16,6 +16,9 @@ else()
     set(PLUGIN_INSTALL_DIR "$ENV{HOMEPATH}/Documents/Skydel-SDX/Plug-ins" CACHE PATH "Define the destination folder where the plug-in examples are installed")
 endif()
 
+set(CMAKE_INSTALL_PREFIX ${PLUGIN_INSTALL_DIR})
+set(CMAKE_INSTALL_LIBDIR .)
+
 ### Dependencies
 find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
 

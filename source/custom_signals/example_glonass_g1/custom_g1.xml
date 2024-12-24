@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomSignals>
+    <CustomSignal Name="CustomG1" Version="1.0" NavMsg="True">
+        <Constellation>GLONASS</Constellation>
+        <CentralFreq>1602000000</CentralFreq>
+        <Bandwidth>8335500</Bandwidth>
+        <ModulationCoef Real="1" Imag="0" />
+        <Codes>
+            <Code Id="G1" />
+        </Codes>
+        <FDMA>
+            <ChannelOffset>562500</ChannelOffset>
+            <Channels>1,-4,5,6,1,-4,5,6,-2,-7,0,-1,-2,-7,0,-1,4,-3,3,2,4,-3,3,2</Channels>
+        </FDMA>
+    </CustomSignal>
+</CustomSignals>

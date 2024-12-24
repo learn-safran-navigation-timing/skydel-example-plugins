@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomSignals>
+    <CustomSignal Name="CustomE1b" Version="1.0" NavMsg="True">
+        <Constellation>Galileo</Constellation>
+        <CentralFreq>1575420000</CentralFreq>
+        <Bandwidth>12107000</Bandwidth>
+        <ModulationCoef Real="0.707106781" Imag="0" />
+        <Codes>
+            <Code Id="E1B" />
+        </Codes>
+        <Subcarriers>
+            <Subcarrier Id="subcarrier1" Rate="1023000">
+                <Coef>0.953462589|-0.953462589</Coef>
+            </Subcarrier>
+            <Subcarrier Id="subcarrier2" Rate="6138000">
+                <Coef>0.301511345|-0.301511345</Coef>
+            </Subcarrier>
+        </Subcarriers>
+    </CustomSignal>
+    <CustomSignal Name="CustomE1c" Version="1.0" NavMsg="False">
+        <Constellation>Galileo</Constellation>
+        <CentralFreq>1575420000</CentralFreq>
+        <Bandwidth>12107000</Bandwidth>
+        <ModulationCoef Real="-0.707106781" Imag="0" />
+        <Codes>
+            <Code Id="E1C" />
+        </Codes>
+        <Subcarriers>
+            <Subcarrier Id="subcarrier1" Rate="1023000">
+                <Coef>0.953462589|-0.953462589</Coef>
+            </Subcarrier>
+            <Subcarrier Id="subcarrier2" Rate="6138000">
+                <Coef>-0.301511345|0.301511345</Coef>
+            </Subcarrier>
+        </Subcarriers>
+    </CustomSignal>
+</CustomSignals>

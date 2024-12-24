@@ -2,6 +2,8 @@
 
 #include <QString>
 
+#include "skydel_plug_ins/skydel_notifier_interface.h"
+
 RapiPluginCommandHandler::RapiPluginCommandHandler(SkydelCommandExecutor& commandExecutor) :
   SkydelCommandHandler<RapiPluginCommandHandler>(commandExecutor)
 {
