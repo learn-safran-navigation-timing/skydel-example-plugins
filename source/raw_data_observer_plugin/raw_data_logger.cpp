@@ -106,10 +106,7 @@ void RawDataLogger::streamData(const SkydelRuntimeRawDataObserver::TimedRawData&
                << signalRawData.psrOffset << ',' << signalRawData.receiverAntennaAzimuth << ','
                << signalRawData.receiverAntennaElevation << ',' << signalRawData.receiverAntennaGain << ','
                << signalRawData.svAntennaAzimuth << ',' << signalRawData.svAntennaElevation << ','
-               << signalRawData.relativePowerLevel << ',' << signalRawData.doplerFrequency << ','
-               << signalRawData.psrChangeRate << ',' << signalRawData.echoPowerLoss << ','
-               << signalRawData.echoDopplerOffset << ',' << signalRawData.echoCarrierPhaseOffset << ','
-               << signalRawData.echoPsrOffset << ',' << signalRawData.receiverCarrierPhaseOffset << ','
+               << signalRawData.relativePowerLevel << ',' << signalRawData.receiverCarrierPhaseOffset << ','
                << signalRawData.satelliteCarrierPhaseOffset << ',' << signalRawData.gpsTow << ','
                << signalRawData.gpsWeekNumber << ',' << signalRawData.sbas << ',' << signalRawData.calibrationOffset
                << ',' << signalRawData.psrSatTime << '\n';

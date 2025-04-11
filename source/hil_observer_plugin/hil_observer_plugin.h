@@ -10,6 +10,7 @@ class HilObserverPlugin : public QObject, public SkydelCoreInterface, public Sky
 public:
   // SkydelCoreInterface
   inline void setLogPath(const QString& logPath) override { m_logPath = logPath; }
+  inline void setInstanceIdentifier(uint32_t) override {}
   inline void setNotifier(SkydelNotifierInterface* notifier) override { m_skydelNotifier = notifier; }
   void setConfiguration(const QString&, const QJsonObject& configuration) override;
   QJsonObject getConfiguration() const override;

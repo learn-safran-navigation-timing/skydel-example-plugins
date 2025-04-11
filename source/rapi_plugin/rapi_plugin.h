@@ -19,6 +19,7 @@ public:
 
   // SkydelCoreInterface
   inline void setLogPath([[maybe_unused]] const QString& path) override {};
+  inline void setInstanceIdentifier(uint32_t) override {}
   inline void setNotifier(SkydelNotifierInterface* notifier) override
   {
     m_notifier = notifier;
