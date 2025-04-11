@@ -26,7 +26,7 @@ QJsonObject SimplePlugin::getConfiguration() const
 
 SkydelWidgets SimplePlugin::createUI()
 {
-  auto view = new SimplePluginView(PLUGIN_IID);
+  auto view = new SimplePluginView(m_identifier);
 
   view->setNotification(m_notificationMessage, m_notificationType);
 

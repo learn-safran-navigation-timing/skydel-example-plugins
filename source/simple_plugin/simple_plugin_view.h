@@ -11,7 +11,7 @@ class SimplePluginView : public QWidget
 {
   Q_OBJECT
 public:
-  explicit SimplePluginView(const QString& name, QWidget* parent = nullptr);
+  explicit SimplePluginView(uint32_t identifier, QWidget* parent = nullptr);
   ~SimplePluginView();
 
   void setNotification(const QString& message, int type);

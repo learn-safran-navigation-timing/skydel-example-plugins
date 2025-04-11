@@ -18,6 +18,7 @@ class TransmitterObserverPlugin :
 public:
   // SkydelCoreInterface
   inline void setLogPath(const QString& path) override { m_logPath = path; }
+  inline void setInstanceIdentifier(uint32_t) override {}
   inline void setNotifier(SkydelNotifierInterface* notifier) override { m_skydelNotifier = notifier; }
   void setConfiguration(const QString& version, const QJsonObject& configuration) override;
   QJsonObject getConfiguration() const override;

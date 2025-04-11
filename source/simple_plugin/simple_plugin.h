@@ -10,6 +10,7 @@ class SimplePlugin : public QObject, public SkydelCoreInterface
 public:
   // SkydelCoreInterface
   inline void setLogPath(const QString&) override {}
+  inline void setInstanceIdentifier(uint32_t identifier) override { m_identifier = identifier; }
   inline void setNotifier(SkydelNotifierInterface* notifier) override { m_skydelNotifier = notifier; }
   void setConfiguration(const QString& version, const QJsonObject& configuration) override;
   QJsonObject getConfiguration() const override;
@@ -21,6 +22,7 @@ signals:
 
 private:
   QString m_logPath;
+  uint32_t m_identifier;
   SkydelNotifierInterface* m_skydelNotifier;
   QString m_notificationMessage {"Hello Skydel!"};
   SkydelNotifierInterface::Type m_notificationType {SkydelNotifierInterface::Type::WARNING};
