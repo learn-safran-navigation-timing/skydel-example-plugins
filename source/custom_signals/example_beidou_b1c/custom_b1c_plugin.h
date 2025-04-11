@@ -12,6 +12,7 @@ public:
 
   // SkydelCoreInterface
   inline void setLogPath(const QString&) override {}
+  inline void setInstanceIdentifier(uint32_t) override {}
   inline void setNotifier(SkydelNotifierInterface*) override {}
   void setConfiguration(const QString&, const QJsonObject&) override {}
   QJsonObject getConfiguration() const override { return {}; }
