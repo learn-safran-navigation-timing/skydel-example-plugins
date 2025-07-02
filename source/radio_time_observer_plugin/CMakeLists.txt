@@ -16,8 +16,6 @@ target_link_libraries(radio_time_observer_plugin PUBLIC
     Qt5::Network
     )
 
-set_target_properties(radio_time_observer_plugin PROPERTIES CXX_STANDARD 17)
-
 target_compile_definitions(radio_time_observer_plugin PRIVATE PLUGIN_IID="radio_time_observer_plugin"
                                                               PLUGIN_FILE="radio_time_observer_plugin.json")
 
