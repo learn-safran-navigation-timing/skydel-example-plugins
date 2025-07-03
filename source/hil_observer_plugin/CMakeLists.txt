@@ -12,8 +12,6 @@ target_link_libraries(hil_observer_plugin PUBLIC
     SkydelPlugin
     )
 
-set_target_properties(hil_observer_plugin PROPERTIES CXX_STANDARD 17)
-
 target_compile_definitions(hil_observer_plugin PRIVATE PLUGIN_IID="hil_observer_plugin"
                                                        PLUGIN_FILE="hil_observer_plugin.json")
 

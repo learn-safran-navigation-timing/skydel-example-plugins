@@ -8,8 +8,6 @@ add_library(custom_qzss_ca SHARED ${EXAMPLE_QZSS_CA_SRC})
 
 target_link_libraries(custom_qzss_ca PUBLIC SkydelPlugin custom_signal_common)
 
-set_target_properties(custom_qzss_ca PROPERTIES CXX_STANDARD 17)
-
 target_compile_definitions(
   custom_qzss_ca PRIVATE PLUGIN_IID="custom_qzss_ca"
                          PLUGIN_FILE="custom_qzss_ca.json")
