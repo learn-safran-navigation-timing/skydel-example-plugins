@@ -1,6 +1,7 @@
 #include "custom_tddm_ca.h"
 
 #include <cstring>
+#include <filesystem>
 #include <sstream>
 
 #ifndef DOWNLINK_PATH
@@ -27,11 +28,9 @@ void setBits(std::array<bool, 300>& bits, const std::string& str)
 
 } // namespace
 
-TddmCAData::TddmCAData(const Sdx::CS::InitData& data) :
-  startWeek(data.startWeek),
-  startSecondOfWeek(data.startSecondOfWeek),
-  navMsg(std::string {data.pathToXml} + '/' + DOWNLINK_PATH,
-         std::make_unique<NavMessageBlock<32, 1, 300, 6000>>(&setBits))
+TddmCAData::TddmCAData(const Sdx::CS::InitializationDatas& datas) :
+  navMsg((std::filesystem::path(std::get<std::string>(datas.at(Sdx::CS::PATH_TO_XML_KEY))) / DOWNLINK_PATH).string(),
+         std::make_unique<NavMessageBlock<32, 300, 6000>>(&setBits))
 {
 }
 
@@ -49,20 +48,20 @@ int32_t CustomTddmCANavMsg::getTOWOffset()
   return 0;
 }
 
-void CustomTddmCANavMsg::buildNavMsg(int64_t elapsedTime, uint32_t prn, const Sdx::CS::Constellation& /*data*/)
+void CustomTddmCANavMsg::buildNavMsg(int64_t elapsedTime, uint32_t svID, const Sdx::CS::ConstellationDatas&)
 {
-  m_data.navMsg.prepare(elapsedTime, prn);
+  m_data.navMsg.prepare(elapsedTime, svID);
 }
 
 CustomTddmCACode::CustomTddmCACode(TddmCAData& data) : m_data(data)
 {
 }
 
-void CustomTddmCACode::getChips(int64_t elapsedMs, uint32_t prn, int8_t* chips)
+void CustomTddmCACode::getChips(int64_t elapsedMs, uint32_t svID, int8_t* chips)
 {
   const auto chipStartIdx = elapsedMs * CoarseAcquisitionCode::CHIPS_PER_MS;
-  const int8_t sign = m_data.navMsg.getBit(elapsedMs, prn) ? -1 : 1;
-  const auto code = m_data.codes.code(prn);
+  const int8_t sign = m_data.navMsg.getBit(elapsedMs, svID) ? -1 : 1;
+  const auto code = m_data.codes.code(svID);
 
   for (int i = 0; i < CoarseAcquisitionCode::CHIPS_PER_MS; ++i)
   {
@@ -86,7 +85,7 @@ uint32_t CustomTddmCACode::getExtraAllocSize()
   return 0;
 }
 
-CustomTddmCA::CustomTddmCA(const Sdx::CS::InitData& data) : m_data(data), m_msg(m_data), m_code(m_data)
+CustomTddmCA::CustomTddmCA(const Sdx::CS::InitializationDatas& datas) : m_data(datas), m_msg(m_data), m_code(m_data)
 {
 }
 

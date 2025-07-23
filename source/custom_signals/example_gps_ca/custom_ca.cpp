@@ -1,6 +1,7 @@
 #include "custom_ca.h"
 
 #include <cstring>
+#include <filesystem>
 #include <sstream>
 
 #ifndef DOWNLINK_PATH
@@ -27,11 +28,9 @@ void setBits(std::array<bool, 300>& bits, const std::string& str)
 
 } // namespace
 
-CAData::CAData(const Sdx::CS::InitData& data) :
-  startWeek(data.startWeek),
-  startSecondOfWeek(data.startSecondOfWeek),
-  navMsg(std::string {data.pathToXml} + '/' + DOWNLINK_PATH,
-         std::make_unique<NavMessageBlock<32, 1, 300, 6000>>(&setBits))
+CAData::CAData(const Sdx::CS::InitializationDatas& datas) :
+  navMsg((std::filesystem::path(std::get<std::string>(datas.at(Sdx::CS::PATH_TO_XML_KEY))) / DOWNLINK_PATH).string(),
+         std::make_unique<NavMessageBlock<32, 300, 6000>>(&setBits))
 {
 }
 
@@ -49,20 +48,20 @@ int32_t CustomCANavMsg::getTOWOffset()
   return 0;
 }
 
-void CustomCANavMsg::buildNavMsg(int64_t elapsedTime, uint32_t prn, const Sdx::CS::Constellation& /*data*/)
+void CustomCANavMsg::buildNavMsg(int64_t elapsedTime, uint32_t svID, const Sdx::CS::ConstellationDatas&)
 {
-  m_data.navMsg.prepare(elapsedTime, prn);
+  m_data.navMsg.prepare(elapsedTime, svID);
 }
 
 CustomCACode::CustomCACode(CAData& data) : m_data(data)
 {
 }
 
-void CustomCACode::getChips(int64_t elapsedTime, uint32_t prn, int8_t* chips)
+void CustomCACode::getChips(int64_t elapsedTime, uint32_t svID, int8_t* chips)
 {
-  int8_t sign = m_data.navMsg.getBit(elapsedTime, prn) ? -1 : 1;
+  int8_t sign = m_data.navMsg.getBit(elapsedTime, svID) ? -1 : 1;
   for (int i = 0; i < 1023; ++i)
-    chips[i] = m_data.codes.code(prn)[i] * sign;
+    chips[i] = m_data.codes.code(svID)[i] * sign;
 }
 
 uint32_t CustomCACode::getNumberOfChipsPerMSec()
@@ -75,7 +74,7 @@ uint32_t CustomCACode::getExtraAllocSize()
   return 0;
 }
 
-CustomCA::CustomCA(const Sdx::CS::InitData& data) : m_data(data), m_msg(m_data), m_code(m_data)
+CustomCA::CustomCA(const Sdx::CS::InitializationDatas& datas) : m_data(datas), m_msg(m_data), m_code(m_data)
 {
 }
 

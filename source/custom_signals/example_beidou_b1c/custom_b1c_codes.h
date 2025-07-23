@@ -29,7 +29,7 @@ public:
 
   uint32_t getNumberOfChipsPerMSec() override;
   uint32_t getExtraAllocSize() override;
-  void getChips(int64_t elapsedTime, uint32_t prn, int8_t* chips) override;
+  void getChips(int64_t elapsedTime, uint32_t svID, int8_t* chips) override;
 
 private:
   struct Pimpl;
@@ -46,7 +46,7 @@ public:
 
   uint32_t getNumberOfChipsPerMSec() override;
   uint32_t getExtraAllocSize() override;
-  void getChips(int64_t elapsedTime, uint32_t prn, int8_t* chips) override;
+  void getChips(int64_t elapsedTime, uint32_t svID, int8_t* chips) override;
 
 private:
   struct Pimpl;

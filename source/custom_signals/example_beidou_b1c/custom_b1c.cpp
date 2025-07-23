@@ -22,10 +22,12 @@ struct CustomB1C::Pimpl
   CustomB1CNavMsg csNavMsg;
 };
 
-CustomB1C::CustomB1C(const Sdx::CS::InitData& csInitData) : m(std::make_unique<Pimpl>(csInitData.startSecondOfWeek))
+CustomB1C::CustomB1C(const Sdx::CS::InitializationDatas& csInitDatas) :
+  m(std::make_unique<Pimpl>(std::get<uint32_t>(csInitDatas.at(Sdx::CS::START_SECOND_OF_WEEK_KEY))))
 {
   auto navGenPtr = CustomB1CNavMsg::makeSharedB1CNavMsgFromFile(
-    (std::filesystem::path(csInitData.pathToXml) / DOWNLINK_FILENAME).string());
+    (std::filesystem::path(std::get<std::string>(csInitDatas.at(Sdx::CS::PATH_TO_XML_KEY))) / DOWNLINK_FILENAME)
+      .string());
   m->csDataCode.setNavMessageGenerator(navGenPtr);
   m->csNavMsg.setNavMessageGenerator(navGenPtr);
 }

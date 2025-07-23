@@ -8,7 +8,6 @@
 namespace
 {
 constexpr uint32_t NB_SVID_MAX = 63;
-constexpr uint32_t FIRST_PRN = 1;
 constexpr uint64_t MESSAGE_DURATION_MS = 18000;
 constexpr uint64_t BIT_COUNT = 1800;
 constexpr uint64_t DOWNLINK_NAV_MESSAGE_INDEX = 6;
@@ -35,7 +34,7 @@ std::shared_ptr<CustomSignalNavMsgFromFile> CustomB1CNavMsg::makeSharedB1CNavMsg
 {
   return std::make_shared<CustomSignalNavMsgFromFile>(
     downlinkPath,
-    std::make_unique<NavMessageBlock<NB_SVID_MAX, FIRST_PRN, BIT_COUNT, MESSAGE_DURATION_MS>>(&setBits),
+    std::make_unique<NavMessageBlock<NB_SVID_MAX, BIT_COUNT, MESSAGE_DURATION_MS>>(&setBits),
     DOWNLINK_NAV_MESSAGE_INDEX);
 }
 
@@ -73,7 +72,7 @@ int32_t CustomB1CNavMsg::getTOWOffset()
   return 0;
 }
 
-void CustomB1CNavMsg::buildNavMsg(int64_t elapsedTime, uint32_t prn, const Sdx::CS::Constellation& /*data*/)
+void CustomB1CNavMsg::buildNavMsg(int64_t elapsedTime, uint32_t svID, const Sdx::CS::ConstellationDatas&)
 {
-  m->navMsg->prepare(elapsedTime, prn);
+  m->navMsg->prepare(elapsedTime, svID);
 }

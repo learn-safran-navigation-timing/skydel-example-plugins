@@ -14,7 +14,7 @@ public:
   ~CustomB1CNavMsg() override;
   uint32_t getNavMsgDurationMs() override;
   int32_t getTOWOffset() override;
-  void buildNavMsg(int64_t elapsedTime, uint32_t prn, const Sdx::CS::Constellation& data) override;
+  void buildNavMsg(int64_t elapsedTime, uint32_t svID, const Sdx::CS::ConstellationDatas& datas) override;
   void setNavMessageGenerator(std::shared_ptr<CustomSignalNavMsgFromFile>);
   static std::shared_ptr<CustomSignalNavMsgFromFile> makeSharedB1CNavMsgFromFile(std::string downlinkPath);
 

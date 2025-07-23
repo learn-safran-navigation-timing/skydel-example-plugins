@@ -1,7 +1,6 @@
 #include "custom_b1c_codes.h"
 
 #include <array>
-#include <cmath>
 #include <cstdint>
 #include <sstream>
 
@@ -455,32 +454,32 @@ void fillB1CDataCodes(std::array<std::array<int8_t, PRIMARY_CODE_SIZE>, NB_SVID_
 
 void fillB1CPilotSecondaryCodes(std::array<std::array<int8_t, B1C_SECONDARY_CODE_SIZE>, NB_SVID_MAX>& codes)
 {
-  for (uint32_t prnIdx = 0; prnIdx < NB_SVID_MAX; ++prnIdx)
+  for (uint32_t svIndex = 0; svIndex < NB_SVID_MAX; ++svIndex)
   {
     for (unsigned secondaryIdx = 0; secondaryIdx < B1C_SECONDARY_CODE_SIZE; ++secondaryIdx)
     {
-      codes[prnIdx][secondaryIdx] = (truncatedWeilCode(secondaryIdx,
-                                                       PHASE_DIFFERENCE_SECONDARY_CODE_PILOT[prnIdx],
-                                                       TRUNCATION_POINT_SECONDARY_CODE_PILOT[prnIdx],
-                                                       false)
-                                       ? -1
-                                       : 1);
+      codes[svIndex][secondaryIdx] = (truncatedWeilCode(secondaryIdx,
+                                                        PHASE_DIFFERENCE_SECONDARY_CODE_PILOT[svIndex],
+                                                        TRUNCATION_POINT_SECONDARY_CODE_PILOT[svIndex],
+                                                        false)
+                                        ? -1
+                                        : 1);
     }
   }
 }
 
 void fillB1CPilotPrimaryCodes(std::array<std::array<int8_t, PRIMARY_CODE_SIZE>, NB_SVID_MAX>& codes)
 {
-  for (uint32_t prnIdx = 0; prnIdx < NB_SVID_MAX; ++prnIdx)
+  for (uint32_t svIndex = 0; svIndex < NB_SVID_MAX; ++svIndex)
   {
     for (unsigned primaryIdx = 0; primaryIdx < PRIMARY_CODE_SIZE; ++primaryIdx)
     {
-      codes[prnIdx][primaryIdx] = (truncatedWeilCode(primaryIdx,
-                                                     PHASE_DIFFERENCE_PRIMARY_CODE_PILOT[prnIdx],
-                                                     TRUNCATION_POINT_PRIMARY_CODE_PILOT[prnIdx],
-                                                     true)
-                                     ? -1
-                                     : 1);
+      codes[svIndex][primaryIdx] = (truncatedWeilCode(primaryIdx,
+                                                      PHASE_DIFFERENCE_PRIMARY_CODE_PILOT[svIndex],
+                                                      TRUNCATION_POINT_PRIMARY_CODE_PILOT[svIndex],
+                                                      true)
+                                      ? -1
+                                      : 1);
     }
   }
 }
@@ -524,17 +523,17 @@ uint32_t CustomB1CDataCode::getExtraAllocSize()
   return 0;
 }
 
-void CustomB1CDataCode::getChips(int64_t elapsedTime, uint32_t prn, int8_t* chips)
+void CustomB1CDataCode::getChips(int64_t elapsedTime, uint32_t svID, int8_t* chips)
 {
   const int64_t beidouTOWMs = elapsedTimeMsToBeidouTOWMs(elapsedTime);
 
   const int64_t offset = beidouTOWMs % 10 * getNumberOfChipsPerMSec();
 
-  const int8_t navBit = m->navMsg->getBit(elapsedTime, prn) ? -1 : 1;
+  const int8_t navBit = m->navMsg->getBit(elapsedTime, svID) ? -1 : 1;
 
   for (uint32_t chipIdx = 0; chipIdx < getNumberOfChipsPerMSec(); ++chipIdx)
   {
-    chips[chipIdx] = m->dataCode[prn - 1][offset + chipIdx] * navBit;
+    chips[chipIdx] = m->dataCode[svID - 1][offset + chipIdx] * navBit;
   }
 }
 
@@ -566,7 +565,7 @@ uint32_t CustomB1CPilotCode::getExtraAllocSize()
   return 0;
 }
 
-void CustomB1CPilotCode::getChips(int64_t elapsedTime, uint32_t prn, int8_t* chips)
+void CustomB1CPilotCode::getChips(int64_t elapsedTime, uint32_t svID, int8_t* chips)
 {
   const int64_t beidouTOWMs = elapsedTimeMsToBeidouTOWMs(elapsedTime);
   const int64_t primaryCodeOffset = (beidouTOWMs % PRIMARY_CODE_PERIOD_MS) *
@@ -576,7 +575,7 @@ void CustomB1CPilotCode::getChips(int64_t elapsedTime, uint32_t prn, int8_t* chi
 
   for (uint32_t chipIdx = 0; chipIdx < getNumberOfChipsPerMSec(); ++chipIdx)
   {
-    chips[chipIdx] = m->primaryCodes[prn - 1][primaryCodeOffset + chipIdx] *
-                     m->secondaryCodes[prn - 1][secondaryCodeOffset];
+    chips[chipIdx] = m->primaryCodes[svID - 1][primaryCodeOffset + chipIdx] *
+                     m->secondaryCodes[svID - 1][secondaryCodeOffset];
   }
 }

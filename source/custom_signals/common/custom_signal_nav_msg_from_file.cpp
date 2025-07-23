@@ -6,7 +6,7 @@
 namespace
 {
 constexpr int32_t DOWNLINK_ELAPSED_MS_INDEX = 0;
-constexpr int32_t DOWNLINK_PRN_INDEX = 2;
+constexpr int32_t DOWNLINK_SV_ID_INDEX = 1;
 
 inline std::vector<std::string> split(const std::string& str, const std::string& delim)
 {
@@ -34,7 +34,7 @@ inline int64_t toInt64(const std::string& str)
 
 inline bool parseLine(const std::string& line,
                       int64_t& out_timestamp,
-                      int64_t& out_prn,
+                      int64_t& out_svID,
                       std::string& out_bits,
                       size_t navMsgIdx)
 {
@@ -44,7 +44,7 @@ inline bool parseLine(const std::string& line,
     return false;
 
   out_timestamp = toInt64(values[DOWNLINK_ELAPSED_MS_INDEX]);
-  out_prn = toInt64(values[DOWNLINK_PRN_INDEX]);
+  out_svID = toInt64(values[DOWNLINK_SV_ID_INDEX]);
   out_bits = values[navMsgIdx];
 
   return true;
@@ -81,45 +81,44 @@ CustomSignalNavMsgFromFile::CustomSignalNavMsgFromFile(const std::string& filena
   parseBlock();
 }
 
-void CustomSignalNavMsgFromFile::prepare(int64_t elapsed, uint32_t prn)
+void CustomSignalNavMsgFromFile::prepare(int64_t elapsed, uint32_t svID)
 {
-  if (!m_navMsgBlock->isValid(prn))
-    throw std::runtime_error(buildString("Downlink file is missing PRN ", prn, "."));
+  if (!m_navMsgBlock->isValid(svID))
+    throw std::runtime_error(buildString("Downlink file is missing SV ID ", svID, "."));
 
-  if (elapsed <= 0 && m_navMsgBlock->timestamp(prn) != elapsed)
+  if (elapsed <= 0 && m_navMsgBlock->timestamp(svID) != elapsed)
     throw std::runtime_error("Downlink file start time is incorrect for this simulation.");
 
-  while (m_file && m_navMsgBlock->timestamp(prn) < elapsed)
+  while (m_file && m_navMsgBlock->timestamp(svID) < elapsed)
     parseBlock();
 
-  if (!m_file && m_navMsgBlock->timestamp(prn) != elapsed)
+  if (!m_file && m_navMsgBlock->timestamp(svID) != elapsed)
     throw std::runtime_error(buildString("Downlink file end reached, can't get block for elapsed ms ", elapsed, "."));
 }
 
-bool CustomSignalNavMsgFromFile::getBit(int64_t elapsed, uint32_t prn)
+bool CustomSignalNavMsgFromFile::getBit(int64_t elapsed, uint32_t svID)
 {
-  return m_navMsgBlock->getBit(elapsed, prn);
+  return m_navMsgBlock->getBit(elapsed, svID);
 }
 
 void CustomSignalNavMsgFromFile::parseBlock()
 {
   int64_t timestamp;
   int64_t firstTimestamp;
-  int64_t prn;
+  int64_t svID;
   std::string bits;
 
-  if (!parseLine(m_lastLine, timestamp, prn, bits, m_downlinkNavMsgIdx))
+  if (!parseLine(m_lastLine, timestamp, svID, bits, m_downlinkNavMsgIdx))
     return;
 
   firstTimestamp = timestamp;
 
   do
   {
-    if (prn < static_cast<int64_t>(m_navMsgBlock->firstPrn()) ||
-        prn > static_cast<int64_t>(m_navMsgBlock->getSvCount() + m_navMsgBlock->firstPrn()))
-      throw std::runtime_error(buildString("Invalid PRN ", prn, " in downlink file."));
+    if (svID < 1 || svID > static_cast<int64_t>(m_navMsgBlock->getSvCount()))
+      throw std::runtime_error(buildString("Invalid SV ID ", svID, " in downlink file."));
 
-    m_navMsgBlock->update(timestamp, static_cast<uint32_t>(prn), bits);
-  } while (std::getline(m_file, m_lastLine) && parseLine(m_lastLine, timestamp, prn, bits, m_downlinkNavMsgIdx) &&
+    m_navMsgBlock->update(timestamp, static_cast<uint32_t>(svID), bits);
+  } while (std::getline(m_file, m_lastLine) && parseLine(m_lastLine, timestamp, svID, bits, m_downlinkNavMsgIdx) &&
            timestamp == firstTimestamp);
 }

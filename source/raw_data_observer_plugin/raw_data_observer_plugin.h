@@ -38,6 +38,8 @@ public:
                                                            : nullptr;
   }
 
+  inline uint64_t getUpdateIntervalMs() const override { return m_loggerRateMs; }
+
 signals:
   void configurationChanged();
 
