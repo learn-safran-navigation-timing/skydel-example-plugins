@@ -11,15 +11,14 @@ class INavMessageBlock
 {
 public:
   virtual ~INavMessageBlock() = default;
-  virtual bool getBit(int64_t elapsed, uint32_t prn) const = 0;
+  virtual bool getBit(int64_t elapsed, uint32_t svID) const = 0;
   virtual uint64_t getSvCount() const = 0;
-  virtual bool isValid(uint32_t prn) const = 0;
-  virtual int64_t timestamp(uint32_t prn) const = 0;
-  virtual void update(int64_t elapsed, uint32_t prn, const std::string& bits) = 0;
-  virtual uint64_t firstPrn() const = 0;
+  virtual bool isValid(uint32_t svID) const = 0;
+  virtual int64_t timestamp(uint32_t svID) const = 0;
+  virtual void update(int64_t elapsed, uint32_t svID, const std::string& bits) = 0;
 };
 
-template<uint64_t SvCount, uint64_t FirstPrn, uint64_t BitCount, uint64_t MessageDurationMs>
+template<uint64_t SvCount, uint64_t BitCount, uint64_t MessageDurationMs>
 class NavMessageBlock : public INavMessageBlock
 {
 public:
@@ -27,27 +26,25 @@ public:
 
   NavMessageBlock(SetBitsFunc setBitsFunc) : m_setBitFunc(std::move(setBitsFunc)) {}
 
-  bool getBit(int64_t elapsed, uint32_t prn) const override
+  bool getBit(int64_t elapsed, uint32_t svID) const override
   {
-    const auto& msg = m_msgs.at(idx(prn));
+    const auto& msg = m_msgs.at(idx(svID));
     return msg.bits[(elapsed - msg.timestamp) * BitCount / MessageDurationMs];
   }
 
   uint64_t getSvCount() const override { return SvCount; }
-  bool isValid(uint32_t prn) const override { return m_msgs.at(idx(prn)).isValid; }
-  int64_t timestamp(uint32_t prn) const override { return m_msgs.at(idx(prn)).timestamp; }
+  bool isValid(uint32_t svID) const override { return m_msgs.at(idx(svID)).isValid; }
+  int64_t timestamp(uint32_t svID) const override { return m_msgs.at(idx(svID)).timestamp; }
 
-  void update(int64_t elapsed, uint32_t prn, const std::string& bits) override
+  void update(int64_t elapsed, uint32_t svID, const std::string& bits) override
   {
-    auto& msg = m_msgs.at(idx(prn));
+    auto& msg = m_msgs.at(idx(svID));
     msg.isValid = true;
     msg.timestamp = elapsed;
     m_setBitFunc(msg.bits, bits);
   }
 
-  uint64_t firstPrn() const override { return FirstPrn; };
-
-  uint32_t idx(uint32_t prn) const { return prn - FirstPrn; }
+  uint32_t idx(uint32_t svID) const { return svID - 1u; }
 
 private:
   struct Msg
@@ -68,8 +65,8 @@ public:
                                       std::unique_ptr<INavMessageBlock> navMsgBlock,
                                       size_t downlinkNavMessageIdx = 7);
 
-  void prepare(int64_t elapsed, uint32_t prn);
-  bool getBit(int64_t elapsed, uint32_t prn);
+  void prepare(int64_t elapsed, uint32_t svID);
+  bool getBit(int64_t elapsed, uint32_t svID);
 
 private:
   void parseBlock();

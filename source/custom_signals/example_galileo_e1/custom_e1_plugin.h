@@ -20,9 +20,9 @@ public:
   inline void initialize() override {}
 
   // SkydelCustomSignalFactoryInterface
-  inline SkydelCustomSignalInterface* createCustomSignal(const Sdx::CS::InitData& data) override
+  inline SkydelCustomSignalInterface* createCustomSignal(const Sdx::CS::InitializationDatas& datas) override
   {
-    return new CustomE1(data);
+    return new CustomE1(datas);
   };
 
 signals:

@@ -2,6 +2,7 @@
 
 #include <array>
 #include <cstring>
+#include <filesystem>
 #include <sstream>
 
 #ifndef DOWNLINK_PATH
@@ -12,11 +13,10 @@ namespace
 {
 
 constexpr uint64_t G1_SV_COUNT = 24;
-constexpr uint64_t G1_FIRST_SLOT = 1;
 constexpr uint64_t G1_NAV_MSG_BIT_COUNT = 200;
 constexpr uint64_t G1_NAV_MSG_DURATION_MS = 2000;
 
-// See glonass_constants.h
+// See glonass_code.h
 constexpr size_t G1_CODE_LENGTH = 511;
 constexpr std::array<int8_t, G1_CODE_LENGTH> G1_RANGING_CODE = {
   {-1, -1, -1, -1, -1, -1, -1, 1,  1,  1,  1,  1,  -1, -1, -1, -1, 1,  -1, -1, -1, -1, -1, 1,  1,  1,  -1, 1,  -1, -1,
@@ -57,12 +57,9 @@ void setBits(std::array<bool, G1_NAV_MSG_BIT_COUNT>& bits, const std::string& st
 
 } // namespace
 
-G1Data::G1Data(const Sdx::CS::InitData& data) :
-  startWeek(data.startWeek),
-  startSecondOfWeek(data.startSecondOfWeek),
-  navMsg(std::string {data.pathToXml} + '/' + DOWNLINK_PATH,
-         std::make_unique<NavMessageBlock<G1_SV_COUNT, G1_FIRST_SLOT, G1_NAV_MSG_BIT_COUNT, G1_NAV_MSG_DURATION_MS>>(
-           &setBits))
+G1Data::G1Data(const Sdx::CS::InitializationDatas& datas) :
+  navMsg((std::filesystem::path(std::get<std::string>(datas.at(Sdx::CS::PATH_TO_XML_KEY))) / DOWNLINK_PATH).string(),
+         std::make_unique<NavMessageBlock<G1_SV_COUNT, G1_NAV_MSG_BIT_COUNT, G1_NAV_MSG_DURATION_MS>>(&setBits))
 {
 }
 
@@ -80,18 +77,18 @@ int32_t CustomG1NavMsg::getTOWOffset()
   return 0;
 }
 
-void CustomG1NavMsg::buildNavMsg(int64_t elapsedTimeMs, uint32_t prn, const Sdx::CS::Constellation& /*data*/)
+void CustomG1NavMsg::buildNavMsg(int64_t elapsedTimeMs, uint32_t svID, const Sdx::CS::ConstellationDatas&)
 {
-  m_data.navMsg.prepare(elapsedTimeMs, prn);
+  m_data.navMsg.prepare(elapsedTimeMs, svID);
 }
 
 CustomG1Code::CustomG1Code(G1Data& data) : m_data(data)
 {
 }
 
-void CustomG1Code::getChips(int64_t elapsedTimeMs, uint32_t prn, int8_t* chips)
+void CustomG1Code::getChips(int64_t elapsedTimeMs, uint32_t svID, int8_t* chips)
 {
-  int8_t sign = m_data.navMsg.getBit(elapsedTimeMs, prn) ? -1 : 1;
+  int8_t sign = m_data.navMsg.getBit(elapsedTimeMs, svID) ? -1 : 1;
   for (size_t i = 0; i < G1_CHIPS_PER_MS; ++i)
     chips[i] = G1_RANGING_CODE[i] * sign;
 }
@@ -106,7 +103,7 @@ uint32_t CustomG1Code::getExtraAllocSize()
   return 0;
 }
 
-CustomG1::CustomG1(const Sdx::CS::InitData& data) : m_data(data), m_msg(m_data), m_code(m_data)
+CustomG1::CustomG1(const Sdx::CS::InitializationDatas& datas) : m_data(datas), m_msg(m_data), m_code(m_data)
 {
 }
 

@@ -7,7 +7,7 @@
 class CustomB1C final : public SkydelCustomSignalInterface
 {
 public:
-  CustomB1C(const Sdx::CS::InitData&);
+  CustomB1C(const Sdx::CS::InitializationDatas& csInitDatas);
 
   ~CustomB1C() override;
 

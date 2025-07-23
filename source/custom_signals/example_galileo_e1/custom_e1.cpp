@@ -1,6 +1,7 @@
 #include "custom_e1.h"
 
 #include <cstring>
+#include <filesystem>
 #include <sstream>
 
 #ifndef DOWNLINK_PATH
@@ -30,11 +31,9 @@ void setBits(std::array<bool, 500>& bits, const std::string& str)
 
 } // namespace
 
-E1Data::E1Data(const Sdx::CS::InitData& data) :
-  startWeek(data.startWeek),
-  startSecondOfWeek(data.startSecondOfWeek),
-  navMsg(std::string {data.pathToXml} + '/' + DOWNLINK_PATH,
-         std::make_unique<NavMessageBlock<36, 1, 500, 2000>>(&setBits))
+E1Data::E1Data(const Sdx::CS::InitializationDatas& datas) :
+  navMsg((std::filesystem::path(std::get<std::string>(datas.at(Sdx::CS::PATH_TO_XML_KEY))) / DOWNLINK_PATH).string(),
+         std::make_unique<NavMessageBlock<36, 500, 2000>>(&setBits))
 {
 }
 
@@ -52,21 +51,21 @@ int32_t CustomE1NavMsg::getTOWOffset()
   return 1;
 }
 
-void CustomE1NavMsg::buildNavMsg(int64_t elapsedTime, uint32_t prn, const Sdx::CS::Constellation& /*data*/)
+void CustomE1NavMsg::buildNavMsg(int64_t elapsedTime, uint32_t svID, const Sdx::CS::ConstellationDatas&)
 {
-  m_data.navMsg.prepare(elapsedTime, prn);
+  m_data.navMsg.prepare(elapsedTime, svID);
 }
 
 CustomE1BCode::CustomE1BCode(E1Data& data) : m_data(data)
 {
 }
 
-void CustomE1BCode::getChips(int64_t elapsedTime, uint32_t prn, int8_t* chips)
+void CustomE1BCode::getChips(int64_t elapsedTime, uint32_t svID, int8_t* chips)
 {
-  const int8_t* fullCode = m_data.code.getE1B(prn - 1);
+  const int8_t* fullCode = m_data.code.getE1B(svID - 1);
   const int8_t* curMs = fullCode + (elapsedTime % 4) * 1023;
 
-  int8_t navBit = m_data.navMsg.getBit(elapsedTime, prn) ? -1 : 1;
+  int8_t navBit = m_data.navMsg.getBit(elapsedTime, svID) ? -1 : 1;
 
   for (int i = 0; i < 1023; ++i)
     chips[i] = navBit * curMs[i];
@@ -86,9 +85,9 @@ CustomE1CCode::CustomE1CCode(E1Data& data) : m_data(data)
 {
 }
 
-void CustomE1CCode::getChips(int64_t elapsedTime, uint32_t prn, int8_t* chips)
+void CustomE1CCode::getChips(int64_t elapsedTime, uint32_t svID, int8_t* chips)
 {
-  const int8_t* fullCode = m_data.code.getE1C(prn - 1);
+  const int8_t* fullCode = m_data.code.getE1C(svID - 1);
   const int8_t* curMs = fullCode + (elapsedTime % 100) * 1023;
   std::memcpy(chips, curMs, 1023);
 }
@@ -103,9 +102,8 @@ uint32_t CustomE1CCode::getExtraAllocSize()
   return 0;
 }
 
-CustomE1::CustomE1(const Sdx::CS::InitData& data) :
-
-  m_data(data),
+CustomE1::CustomE1(const Sdx::CS::InitializationDatas& datas) :
+  m_data(datas),
   m_msg(m_data),
   m_e1bCode(m_data),
   m_e1cCode(m_data)
