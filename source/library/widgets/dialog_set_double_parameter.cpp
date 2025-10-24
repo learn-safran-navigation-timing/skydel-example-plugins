@@ -23,6 +23,8 @@ DialogSetDoubleParameter::DialogSetDoubleParameter(const ParameterInfo& paramete
   m_lineEdit(new QLineEdit()),
   m_buttonBox(new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this))
 {
+  setWindowTitle(parameter.title);
+
   QVBoxLayout* layout = new QVBoxLayout(this);
 
   m_lineEdit->setText(QString::number(parameter.defaultValue));
@@ -39,12 +41,23 @@ DialogSetDoubleParameter::DialogSetDoubleParameter(const ParameterInfo& paramete
 
   layout->addWidget(new QLabel("Min: " + QString::number(parameter.min) + " Max: " + QString::number(parameter.max)));
   layout->addSpacing(10);
-  layout->addWidget(new QLabel(parameter.description));
-  layout->addSpacing(10);
+
+  if (parameter.description.size() > 0)
+  {
+    layout->addWidget(new QLabel(parameter.description));
+    layout->addSpacing(10);
+  }
+
   layout->addWidget(m_buttonBox);
 
   connect(m_buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
   connect(m_buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+}
+
+void DialogSetDoubleParameter::showEvent(QShowEvent* event)
+{
+  QDialog::showEvent(event);
+  m_lineEdit->setFocus();
 }
 
 void DialogSetDoubleParameter::textEdited(const QString& newText, const ParameterInfo& parameterInfo)

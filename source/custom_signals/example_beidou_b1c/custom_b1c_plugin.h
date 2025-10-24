@@ -8,8 +8,6 @@ class CustomB1CPlugin : public QObject, public SkydelCoreInterface, public Skyde
   Q_OBJECT
 
 public:
-  CustomB1CPlugin();
-
   // SkydelCoreInterface
   inline void setLogPath(const QString&) override {}
   inline void setInstanceIdentifier(uint32_t) override {}
