@@ -8,8 +8,6 @@ class CustomE1Plugin : public QObject, public SkydelCoreInterface, public Skydel
   Q_OBJECT
 
 public:
-  CustomE1Plugin();
-
   // SkydelCoreInterface
   inline void setLogPath(const QString&) override {}
   inline void setInstanceIdentifier(uint32_t) override {}

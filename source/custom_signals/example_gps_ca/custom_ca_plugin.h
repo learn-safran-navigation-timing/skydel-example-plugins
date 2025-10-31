@@ -8,8 +8,6 @@ class CustomCAPlugin : public QObject, public SkydelCoreInterface, public Skydel
   Q_OBJECT
 
 public:
-  CustomCAPlugin();
-
   // SkydelCoreInterface
   inline void setLogPath(const QString&) override {}
   inline void setInstanceIdentifier(uint32_t) override {}

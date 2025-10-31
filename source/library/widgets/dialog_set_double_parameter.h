@@ -7,6 +7,7 @@ class QDialogButtonBox;
 
 struct ParameterInfo
 {
+  QString title {};
   QString name {};
   QString unit {};
   double min {std::numeric_limits<double>::lowest()};
@@ -25,6 +26,7 @@ public:
   double getValue() const;
 
 private:
+  void showEvent(QShowEvent* event) override;
   void textEdited(const QString& newText, const ParameterInfo& parameterInfo);
 
   QLineEdit* m_lineEdit;
