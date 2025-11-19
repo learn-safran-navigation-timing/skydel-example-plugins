@@ -2,5 +2,4 @@
 
 CustomCAPlugin::CustomCAPlugin()
 {
-
 }

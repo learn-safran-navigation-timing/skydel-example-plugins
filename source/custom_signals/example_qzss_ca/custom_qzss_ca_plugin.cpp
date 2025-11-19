@@ -2,5 +2,4 @@
 
 CustomQzssCAPlugin::CustomQzssCAPlugin()
 {
-
 }
