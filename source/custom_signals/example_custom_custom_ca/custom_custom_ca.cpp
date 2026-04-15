@@ -1,0 +1,95 @@
+#include "custom_custom_ca.h"
+
+#include <cstring>
+#include <filesystem>
+#include <sstream>
+
+#ifndef DOWNLINK_PATH
+#define DOWNLINK_PATH "./custom_custom_ca_downlink.csv"
+#endif
+
+namespace
+{
+
+void setBits(std::array<bool, 300>& bits, const std::string& str)
+{
+  std::istringstream iss(str);
+  iss >> std::hex;
+
+  for (int i = 0; i < 10; ++i)
+  {
+    uint32_t word = 0;
+    iss >> word;
+
+    for (int j = 0; j < 30; ++j)
+      bits[i * 30 + j] = word & (1 << (29 - j));
+  }
+}
+
+} // namespace
+
+CAData::CAData(const Sdx::CS::InitializationDatas& datas) :
+  navMsg((std::filesystem::path(std::get<std::string>(datas.at(Sdx::CS::PATH_TO_XML_KEY))) / DOWNLINK_PATH).string(),
+         std::make_unique<NavMessageBlock<32, 300, 6000>>(&setBits))
+{
+}
+
+CustomCANavMsg::CustomCANavMsg(CAData& data) : m_data(data)
+{
+}
+
+uint32_t CustomCANavMsg::getNavMsgDurationMs()
+{
+  return 6000;
+}
+
+int32_t CustomCANavMsg::getTOWOffset()
+{
+  return 0;
+}
+
+void CustomCANavMsg::buildNavMsg(int64_t elapsedTime, uint32_t svID, const Sdx::CS::ConstellationDatas&)
+{
+  m_data.navMsg.prepare(elapsedTime, svID);
+}
+
+CustomCACode::CustomCACode(CAData& data) : m_data(data)
+{
+}
+
+void CustomCACode::getChips(int64_t elapsedTime, uint32_t svID, int8_t* chips)
+{
+  int8_t sign = m_data.navMsg.getBit(elapsedTime, svID) ? -1 : 1;
+  for (int i = 0; i < 1023; ++i)
+    chips[i] = m_data.codes.code(svID)[i] * sign;
+}
+
+uint32_t CustomCACode::getNumberOfChipsPerMSec()
+{
+  return 1023;
+}
+
+uint32_t CustomCACode::getExtraAllocSize()
+{
+  return 0;
+}
+
+CustomCA::CustomCA(const Sdx::CS::InitializationDatas& datas) : m_data(datas), m_msg(m_data), m_code(m_data)
+{
+}
+
+CustomCA::~CustomCA()
+{
+}
+
+SkydelCustomSignalNavMsg* CustomCA::getNavMsg()
+{
+  return &m_msg;
+}
+
+SkydelCustomSignalCode* CustomCA::getCode(const char* name)
+{
+  if (std::strcmp(name, "L1CA") == 0)
+    return &m_code;
+  return nullptr;
+}
