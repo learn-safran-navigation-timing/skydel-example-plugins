@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomSignals>
-    <CustomSignal Name="CustomCa" Version="1.0" NavMsg="True">
+    <CustomSignal Name="CustomCa" DisplayName="CS L1 C/A" Version="1.0" NavMsg="True">
         <Constellation>GPS</Constellation>
         <CentralFreq>1575420000</CentralFreq>
         <Bandwidth>2046000</Bandwidth>

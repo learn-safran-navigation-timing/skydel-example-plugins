@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomSignals>
-    <CustomSignal Name="CustomE1b" Version="1.0" NavMsg="True">
+    <CustomSignal Name="CustomE1b" DisplayName="CS E1b" Version="1.0" NavMsg="True">
         <Constellation>Galileo</Constellation>
         <CentralFreq>1575420000</CentralFreq>
         <Bandwidth>12107000</Bandwidth>
@@ -17,7 +17,7 @@
             </Subcarrier>
         </Subcarriers>
     </CustomSignal>
-    <CustomSignal Name="CustomE1c" Version="1.0" NavMsg="False">
+    <CustomSignal Name="CustomE1c" DisplayName="CS E1c" Version="1.0" NavMsg="False">
         <Constellation>Galileo</Constellation>
         <CentralFreq>1575420000</CentralFreq>
         <Bandwidth>12107000</Bandwidth>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomSignals>
-    <CustomSignal Name="CustomB1cData" Version="1.0" NavMsg="True">
+    <CustomSignal Name="CustomB1cData" DisplayName="CS B1c Data" Version="1.0" NavMsg="True">
         <Constellation>BEIDOU</Constellation>
         <CentralFreq>1575420000</CentralFreq>
         <Bandwidth>1023000</Bandwidth>
@@ -14,7 +14,7 @@
             </Subcarrier>
         </Subcarriers>
     </CustomSignal>
-    <CustomSignal Name="CustomB1cPilotB" Version="1.0" NavMsg="False">
+    <CustomSignal Name="CustomB1cPilotB" DisplayName="CS B1c PilotB" Version="1.0" NavMsg="False">
         <Constellation>BEIDOU</Constellation>
         <CentralFreq>1575420000</CentralFreq>
         <Bandwidth>1023000</Bandwidth>
@@ -28,7 +28,7 @@
             </Subcarrier>
         </Subcarriers>
     </CustomSignal>
-    <CustomSignal Name="CustomB1cPilotA" Version="1.0" NavMsg="False">
+    <CustomSignal Name="CustomB1cPilotA" DisplayName="CS B1c PilotA" Version="1.0" NavMsg="False">
         <Constellation>BEIDOU</Constellation>
         <CentralFreq>1575420000</CentralFreq>
         <Bandwidth>1023000</Bandwidth>

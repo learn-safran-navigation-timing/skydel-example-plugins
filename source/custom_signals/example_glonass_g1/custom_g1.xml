@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomSignals>
-    <CustomSignal Name="CustomG1" Version="1.0" NavMsg="True">
+    <CustomSignal Name="CustomG1" DisplayName="CS G1" Version="1.0" NavMsg="True">
         <Constellation>GLONASS</Constellation>
         <CentralFreq>1602000000</CentralFreq>
         <Bandwidth>8335500</Bandwidth>
