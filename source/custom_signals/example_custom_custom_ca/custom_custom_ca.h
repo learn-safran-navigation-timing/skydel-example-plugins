@@ -1,8 +1,8 @@
 #pragma once
 
 #include "coarse_acquisition_code.h"
-#include "skydel_plug_ins/custom_signal/skydel_custom_signal_interface.h"
 #include "custom_signal_nav_msg_from_file.h"
+#include "skydel_plug_ins/custom_signal/skydel_custom_signal_interface.h"
 
 class CAData
 {
