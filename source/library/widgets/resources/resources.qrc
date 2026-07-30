@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/plugin_widgets">
+        <file>info-click-20.png</file>
+        <file>info-hover-20.png</file>
+        <file>info-normal-20.png</file>
+    </qresource>
+</RCC>
