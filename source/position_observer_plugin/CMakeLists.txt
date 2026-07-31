@@ -2,8 +2,6 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-find_package(Qt5 COMPONENTS Network REQUIRED)
-
 add_library(position_observer_plugin SHARED
     position_logger.cpp
     position_observer_plugin.cpp
