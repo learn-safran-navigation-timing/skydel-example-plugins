@@ -20,6 +20,9 @@ set(CMAKE_INSTALL_PREFIX ${PLUGIN_INSTALL_DIR})
 set(CMAKE_INSTALL_LIBDIR .)
 
 ### Dependencies
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
 find_package(Qt5 COMPONENTS Core Network Widgets REQUIRED)
 
 # Skydel Plugins SDK

@@ -1,5 +1,3 @@
-set(CMAKE_AUTOMOC ON)
-
 file(GLOB RAW_DATA_OBSERVER_PLUGIN_SRC *.cpp *.ui)
 
 add_library(raw_data_observer_plugin SHARED ${RAW_DATA_OBSERVER_PLUGIN_SRC})
