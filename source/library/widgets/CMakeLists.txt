@@ -1,3 +1,5 @@
+set(CMAKE_AUTOUIC ON)
+
 file(GLOB PLUGIN_WIDGETS_SRC *.cpp *.ui)
 
 qt5_add_resources(PLUGIN_WIDGETS_SRC resources/resources.qrc)
