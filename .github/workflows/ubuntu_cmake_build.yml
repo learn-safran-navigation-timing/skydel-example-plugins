@@ -2,9 +2,15 @@ name: Ubuntu CMake Build
 
 on:
   push:
-    branches: [master]
+    branches:
+      - master
+      - skydel-25-9
+
   pull_request:
-    branches: [master]
+    branches:
+      - master
+      - skydel-25-9
+
   workflow_dispatch:
 
 jobs:
@@ -48,12 +54,24 @@ jobs:
           mkdir -p $QT_TMP
           cd $QT_TMP
 
-          # Build qtbase
-          git clone --branch v${{ env.QT_VERSION }}-lts-lgpl --single-branch https://github.com/qt/qtbase
-          cd qtbase
-          sed -i "0,/#ifdef __cplusplus/!b;//a#  include <limits>" src/corelib/global/qglobal.h
+          git clone \
+            --branch v${{ env.QT_VERSION }}-lts-lgpl \
+            --single-branch \
+            https://github.com/qt/qtbase
 
-          ./configure -prefix ${{ env.QT_PREFIX }} -xcb -opensource -confirm-license -nomake tests -nomake examples
+          cd qtbase
+
+          sed -i "0,/#ifdef __cplusplus/!b;//a#  include <limits>" \
+            src/corelib/global/qglobal.h
+
+          ./configure \
+            -prefix ${{ env.QT_PREFIX }} \
+            -xcb \
+            -opensource \
+            -confirm-license \
+            -nomake tests \
+            -nomake examples
+
           make -j$(nproc)
           sudo make install
 
@@ -67,3 +85,29 @@ jobs:
             -G Ninja
             -DCMAKE_PREFIX_PATH=${{ env.QT_PREFIX }}
           build-type: Release
+
+      - name: Package GPS Custom C/A plugin
+        run: |
+          rm -rf artifact
+          mkdir -p artifact
+
+          find "${{ runner.workspace }}/build" \
+            -type f \
+            -name "libcustom_custom_ca.so" \
+            -exec cp {} artifact/ \;
+
+          cp source/custom_signals/example_custom_custom_ca/custom_custom_ca.xml artifact/
+          cp source/custom_signals/example_custom_custom_ca/custom_custom_ca_downlink.csv artifact/
+
+          echo "Packaged files:"
+          ls -lh artifact
+
+          echo "Checking shared library:"
+          test -f artifact/libcustom_custom_ca.so
+
+      - name: Upload GPS Custom C/A plugin
+        uses: actions/upload-artifact@v4
+        with:
+          name: custom-custom-ca-skydel-25-9
+          path: artifact/
+          if-no-files-found: error
